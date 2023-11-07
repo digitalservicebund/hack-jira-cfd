@@ -5,11 +5,11 @@ import { mapJiraResponseToBusinessObjects } from ".";
 describe("mapJiraResponseToBusinessObjects()", () => {
     const input = jiraResponseBodyFixture;
     const result = mapJiraResponseToBusinessObjects(input)
-    test("issues to have a 'key' property", () => {
+    test("issues to have a 'key' string property", () => {
         expect(result[0].key).toBeString();
     })
 
-    // test("issues to have a 'fields' array", () => {
-    //     expect(true).toBeFalse()
-    // })
+    test("issues to have a 'createdDate' date property", () => {
+        expect(result[0].createdDate).toBeDate();
+    })
 })

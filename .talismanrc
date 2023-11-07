@@ -1,3 +1,6 @@
 fileignoreconfig:
 - filename: index.test.ts
-  allowed_patterns: ["result[0].key"]
+  allowed_patterns: [
+    "result[0].key",
+    have a 'key' string property"
+    ]

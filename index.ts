@@ -25,7 +25,8 @@ function listHardcodedData(jiraData: JiraData): void {
 }
 
 interface Issue {
-    key: string
+    key: string,
+    createdDate: Date
 }
 
 export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
