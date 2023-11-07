@@ -31,7 +31,10 @@ interface Issue {
 
 export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
     const issues: Issue[] = jiraResponse.issues.map((i: any) => {
-        return {key: i.key}
+        return {
+            key: i.key,
+            createdDate: new Date(i.fields.createdDate)
+        }
     })
     return issues;
 }
