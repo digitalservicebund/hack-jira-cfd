@@ -1,3 +1,6 @@
+bun.lockb
+
+##------GitHub defaults for a Node app-------##
 # Logs
 logs
 *.log
