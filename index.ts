@@ -26,14 +26,16 @@ function listHardcodedData(jiraData: JiraData): void {
 
 interface Issue {
     key: string,
-    createdDate: Date
+    createdDate: Date,
+    resolutionDate: Date
 }
 
 export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
     const issues: Issue[] = jiraResponse.issues.map((i: any) => {
         return {
             key: i.key,
-            createdDate: new Date(i.fields.createdDate)
+            createdDate: new Date(i.fields.createdDate),
+            resolutionDate: new Date(i.fields.resolutionDate)
         }
     })
     return issues;
