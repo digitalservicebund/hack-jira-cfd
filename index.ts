@@ -28,7 +28,10 @@ interface Issue {
     key: string
 }
 
-export function mapJiraResponseToBusinessObjects(jiraResponse: object): Issue[] {
-    return []
+export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
+    const issues: Issue[] = jiraResponse.issues.map((i: any) => {
+        return {key: i.key}
+    })
+    return issues;
 }
 
