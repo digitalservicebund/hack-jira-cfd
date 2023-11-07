@@ -1,4 +1,5 @@
 bun.lockb
+test-fixtures/jira-response-body.ts
 
 ##------GitHub defaults for a Node app-------##
 # Logs
