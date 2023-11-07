@@ -9,7 +9,6 @@ export async function runJqlQueryAgainstJira(jiraData: JiraData): Promise<object
     const searchParams = new URLSearchParams({ "jql": jiraData.jiraJqlQuery })
     const searchAPI = `${jiraData.jiraApiBaseUrl}/search`
     const searchUrl = `${searchAPI}?${searchParams}`
-    console.log(searchUrl);
 
     const base64Credentials = btoa(`${jiraData.jiraEmail}:${jiraData.jiraAuthToken}`)
     const authHeaderValue = `Basic ${base64Credentials}`
