@@ -10,3 +10,8 @@ We need a couple of environment variables set. You can use a `.env` file to do s
 * Fetch dependencies: `bun install`
 * Run once: `bun index.ts`
 * Run in watch mode: `bun --watch index.ts`
+
+## Test
+* Save the response of `runJqlQueryAgainstJira()` to `/test-fixtures/jira-response-body.ts`
+* Run tests once: `bun test`
+* Run in watch mode: `bun --watch test`
