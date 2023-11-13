@@ -2,5 +2,6 @@ fileignoreconfig:
 - filename: index.test.ts
   allowed_patterns: [
     "result[0].key",
-    have a 'key' string property"
+    have a 'key' string property",
+    const passingItems = items.map((i: any) => i.fromString.includes("To Do") && i.toString.includes("In Progress"))
     ]

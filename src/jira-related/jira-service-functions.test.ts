@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { jiraResponseBodyFixture } from "./test-fixtures/jira-response-body";
-import { mapJiraResponseToBusinessObjects } from ".";
+import { jiraResponseBodyFixture } from "../../test-fixtures/jira-response-body";
+import { mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 
 describe("mapJiraResponseToBusinessObjects()", () => {
     const input = jiraResponseBodyFixture;
@@ -17,5 +17,10 @@ describe("mapJiraResponseToBusinessObjects()", () => {
     test("issue to have a 'resolutionDate' date property", () => {
         expect(result[0].resolutionDate).toBeDate();
     })
+})
 
+describe("getDateForStartingInProgressOfIssue()", () => {
+    test("", () => {
+        expect(true).toBeFalse()
+    })
 })
