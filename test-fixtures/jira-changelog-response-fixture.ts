@@ -1,4 +1,4 @@
-export const sampleJiraChangelogQueryResult = {
+export const jiraChangelogQueryResponseBodyFixture = {
     "self": "hidden",
     "maxResults": 100,
     "startAt": 0,
