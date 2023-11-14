@@ -34,5 +34,3 @@ function isFromToDo(item: any) {
 function isToInProgress(item: any) {
     return item.toString === "In Progress"
 }
-
-function h
