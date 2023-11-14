@@ -1,9 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { jiraResponseBodyFixture } from "../../test-fixtures/jira-response-body";
-import { mapJiraResponseToBusinessObjects } from "./jira-service-functions";
+import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-query-response-fixture";
+import { getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
+import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
 
 describe("mapJiraResponseToBusinessObjects()", () => {
-    const input = jiraResponseBodyFixture;
+    const input = jiraJqlQueryResponseBodyFixture;
     const result = mapJiraResponseToBusinessObjects(input)
 
     test("issues to have a 'key' string property", () => {
@@ -20,7 +21,14 @@ describe("mapJiraResponseToBusinessObjects()", () => {
 })
 
 describe("getDateForStartingInProgressOfIssue()", () => {
-    test("", () => {
-        expect(true).toBeFalse()
+    const input = jiraChangelogQueryResponseBodyFixture
+    const result = getDateForStartingInProgressOfIssue(input)
+
+    test("it should return a date", () => {
+        expect(result).toBeDate()
+    })
+
+    test("it should return '2023-11-03T09:58:19.762+0100'", () => {
+        expect(result).toEqual(new Date("2023-11-03T09:58:19.762+0100"))
     })
 })
