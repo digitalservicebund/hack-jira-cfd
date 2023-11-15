@@ -12,11 +12,8 @@ export function getCycleTimeHistogram(issues: Issue[]): CycleTimeHistogramEntry[
         const durationDays = differenceInBusinessDays(issue.resolutionDate, issue.startedDate!)
         return durationDays
     })
-    console.log("DURATIONS", durations);
     
     const durationsHistogramDictionary = _.countBy(durations, _.identity)
-
-    console.log("HIST-Dictionary", durationsHistogramDictionary);
 
     const durationsHistogram = _.keys(durationsHistogramDictionary).map(key => ({
         numberOfDays: parseInt(key, 10),
