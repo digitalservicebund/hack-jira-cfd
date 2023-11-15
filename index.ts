@@ -1,5 +1,6 @@
-import { JiraQueryDataForFetchingIssues, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
-import { createAuthorizationHeaderValue } from "./src/jira-related/jira-service-functions";
+import { JsxEmit } from "typescript";
+import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
+import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
 
 console.log("Started");
 
@@ -14,10 +15,28 @@ const hardcodedJiraData: JiraQueryDataForFetchingIssues = {
 listHardcodedData(hardcodedJiraData)
 
 const authHeaderValue = createAuthorizationHeaderValue(hardcodedJiraData.jiraAuthEmail, hardcodedJiraData.jiraAuthToken);
-const jqlResult = await runJqlQueryAgainstJira(, hardcodedJiraData.jiraJqlQuery, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
+const jqlResult = await runJqlQueryAgainstJira(hardcodedJiraData.jiraJqlQuery, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
+const issues = mapJiraResponseToBusinessObjects(jqlResult)
 // check if we reached the limit of 50 results // missing #thisIsAHack
-// const changelogQueryResult = await getIssueChangelog("ndisc-40", hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
-// console.log(JSON.stringify(changelogQueryResult, null, 2));
+const stats = await Promise.all(
+    issues.map(async issue => {
+        const issueChangelog = await getIssueChangelog(
+            issue.key,
+            hardcodedJiraData.jiraApiBaseUrl,
+            authHeaderValue)
+        const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
+        console.log(`fetching details on ${issue.key}`)
+        return {
+            ...issue,
+            startedDate
+        }
+    })
+)
+
+console.log(JSON.stringify(stats, null, 2));
+
+
+console.log("Done");
 
 // -----------
 function listHardcodedData(jiraData: JiraQueryDataForFetchingIssues): void {
