@@ -10,8 +10,6 @@ export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthTo
 
 export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
     const issues: Issue[] = jiraResponse.issues.map((i: any) => {
-        console.log(i);
-        
         return {
             key: i.key,
             createdDate: new Date(i.fields.created),
@@ -27,7 +25,7 @@ export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date {
     const values: any[] = issueChangelog.values
     // can we assume just one? #thisIsAHack
     const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item)))
-    
+
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
 
