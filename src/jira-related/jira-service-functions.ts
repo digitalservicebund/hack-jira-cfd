@@ -16,21 +16,27 @@ export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
             resolutionDate: new Date(i.fields.resolutionDate)
         }
     })
+    
     return issues;
 }
 
 // https://digitalservicebund.atlassian.net/rest/api/2/issue/ndisc-40/changelog
 export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date {
     const values: any[] = issueChangelog.values
-
-
-    return new Date();
+    // can we assume just one? #thisIsAHack
+    const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item)))
+    
+    return new Date(valueWithItemsFromToDoToInProgress.created);
 }
 
-function isFromToDo(item: any) {
+function itemComesFromToDo(item: any) {
     return item.fromString === "To Do"
 }
 
-function isToInProgress(item: any) {
+function itemGoesToInProgress(item: any) {
     return item.toString === "In Progress"
+}
+
+function itemIsTransitionToInProgress(item: any) {
+    return itemComesFromToDo(item) && itemGoesToInProgress(item)
 }
