@@ -3,3 +3,5 @@ fileignoreconfig:
   allowed_patterns: ["result[0].key"]
 - filename: test-fixtures/jira-jql-query-response-fixture.ts
   allowed_patterns: [key, projectTypeKey]
+- filename: src/core/core-functions.test.ts
+  allowed_patterns: [key]

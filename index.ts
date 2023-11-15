@@ -46,10 +46,3 @@ function listHardcodedData(jiraData: JiraQueryDataForFetchingIssues): void {
     console.log("jiraJqlQuery:", `"${jiraData.jiraJqlQuery}"`);
 }
 
-export interface Issue {
-    key: string,
-    createdDate: Date,
-    resolutionDate: Date,
-
-}
-

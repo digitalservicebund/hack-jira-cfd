@@ -1,5 +1,5 @@
-import { Issue } from "../..";
 import * as _ from "lodash"
+import { Issue } from "../core/core-interfaces";
 
 export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthToken: string): string {
     const base64Credentials = btoa(`${jiraAuthEmail}:${jiraAuthToken}`)
