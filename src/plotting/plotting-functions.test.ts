@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { createPlotDataFromCycleTimeHistogram } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 
-describe("createPlotDataFromCycleTimeHistogram()", () =>{
+describe("createPlotDataFromCycleTimeHistogram()", () => {
     const input: CycleTimeHistogramEntry[] = [{
         numberOfDays: 2,
         issueCount: 2
@@ -14,6 +14,11 @@ describe("createPlotDataFromCycleTimeHistogram()", () =>{
     const result = createPlotDataFromCycleTimeHistogram(input);
 
     test("should return an array of length one", () => {
-        expect(result).toBeArrayOfSize(1)        
+        expect(result).toBeArrayOfSize(1)
+    })
+
+    test("should return an array in properties 'x' and 'y'", () => {
+        expect(result[0].x).toBeArray();
+        expect(result[0].y).toBeArray();
     })
 })
