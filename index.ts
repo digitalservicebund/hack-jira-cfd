@@ -1,8 +1,9 @@
 import { JsxEmit } from "typescript";
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
-import { plotCycleTimeHistogram } from "./src/plotting/plotting-functions";
+import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram, plotCycleTimeHistogram } from "./src/plotting/plotting-functions";
 import { CycleTimeHistogramEntry, getCycleTimeHistogram } from "./src/core/core-functions";
+import { Plot, plot } from "nodeplotlib";
 
 console.log("Started");
 
@@ -37,7 +38,15 @@ const stats = await Promise.all(
 
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 
-plotCycleTimeHistogram(cycleTimeHistogramData)
+const histogramPlot = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
+const likelyhoodPlot = createPlotDataForLikelyhoods(cycleTimeHistogramData)
+
+const data: Plot[] = [
+    histogramPlot,
+    likelyhoodPlot
+]
+
+(data);
 
 
 console.log("Done");

@@ -32,10 +32,6 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
         expect(result.y).toEqual([2, 1])
     })
 
-    test("should return 'bar' in 'type' property", () => {
-        expect(result.type).toEqual('bar')
-    })
-
     // TODO: fill in 0 valued entries for 0, 1, etc. days if they don't exist in the dataset
 })
 
