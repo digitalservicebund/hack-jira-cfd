@@ -13,24 +13,24 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
 
     const result = createPlotDataFromCycleTimeHistogram(input);
 
-    test("should return an array of length one", () => {
-        expect(result).toBeArrayOfSize(1)
+    test("should return defined", () => {
+        expect(result).toBeDefined()
     })
 
-    test("should return an array in properties 'x' and 'y'", () => {
-        expect(result[0].x).toBeArray();
-        expect(result[0].y).toBeArray();
+    test("should return properties 'x' and 'y'", () => {
+        expect(result.x).toBeArray();
+        expect(result.y).toBeArray();
     })
 
     test("should return the number of days in 'x' property", () => {
-        expect(result[0].x).toEqual([2, 3])
+        expect(result.x).toEqual([2, 3])
     })
 
     test("should return the issue count in 'y' property", () => {
-        expect(result[0].y).toEqual([2, 1])
+        expect(result.y).toEqual([2, 1])
     })
 
     test("should return 'bar' in 'type' property", () => {
-        expect(result[0].type).toEqual('bar')
+        expect(result.type).toEqual('bar')
     })
 })
