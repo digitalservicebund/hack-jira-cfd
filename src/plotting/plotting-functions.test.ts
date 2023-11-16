@@ -21,4 +21,8 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
         expect(result[0].x).toBeArray();
         expect(result[0].y).toBeArray();
     })
+
+    test("should return the number of days in 'x' property", () => {
+        expect(result[0].x).toEqual([2, 3])
+    })
 })
