@@ -1,9 +1,8 @@
-import { JsxEmit } from "typescript";
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
-import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram, plotCycleTimeHistogram } from "./src/plotting/plotting-functions";
-import { CycleTimeHistogramEntry, getCycleTimeHistogram } from "./src/core/core-functions";
-import { Plot, plot } from "nodeplotlib";
+import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
+import { getCycleTimeHistogram } from "./src/core/core-functions";
+import { Layout, Plot, plot } from "nodeplotlib";
 
 console.log("Started");
 
@@ -38,15 +37,48 @@ const stats = await Promise.all(
 
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 
-const histogramPlot = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
-const likelyhoodPlot = createPlotDataForLikelyhoods(cycleTimeHistogramData)
+const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
+const likelyhoodPlotData = createPlotDataForLikelyhoods(cycleTimeHistogramData)
 
-const data: Plot[] = [
-    histogramPlot,
-    likelyhoodPlot
-]
 
-(data);
+const histogramPlot: Plot = {
+    ...histogramPlotData,
+    type: "bar"
+}
+
+console.log(histogramPlot);
+
+const likelyhoodPlot: Plot = {
+    ...likelyhoodPlotData,
+    type: "scatter"
+}
+
+console.log(likelyhoodPlot);
+
+
+const histogramLayout: Layout = {
+    title: "Cycle Time Histogram (In Progress -> Done)",
+    xaxis: {
+        title: "Days after being started"
+    },
+    yaxis: {
+        title: "# of issues"
+    }
+}
+
+const likelyHoodLayout: Layout = {
+    title: "Completion Ratio",
+    xaxis: {
+        title: "Days after being started"
+    },
+    yaxis: {
+        title: "% of issues completed",
+        range: [0, 100]
+    }
+}
+
+plot([histogramPlot], histogramLayout)
+plot([likelyhoodPlot], likelyHoodLayout)
 
 
 console.log("Done");
