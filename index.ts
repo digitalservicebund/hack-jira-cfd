@@ -32,20 +32,22 @@ const stats = await Promise.all(
             hardcodedJiraData.jiraApiBaseUrl,
             authHeaderValue)
         const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
-        process.stdout.write(`- ${issue.key}`)
+        console.log("- ${issue.key}: "
+            + startedDate.toISOString()
+            + " till "
+            + issue.resolutionDate.toISOString())
         return {
             ...issue,
             startedDate
         }
     })
 )
-process.stdout.write(`. \n`)
+
+console.log("Computing graph data");
 
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
-
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const likelyhoodPlotData = createPlotDataForLikelyhoods(cycleTimeHistogramData)
-
 
 const histogramPlot: Plot = {
     ...histogramPlotData,
@@ -63,9 +65,9 @@ console.log(likelyhoodPlot);
 
 
 const histogramLayout: Layout = {
-    title: "Cycle Time Histogram (In Progress -> Done)",
+    title: `Cycle Time Histogram (In Progress -> Done)<br>(${process.env.JIRA_JQL_QUERY})`,
     xaxis: {
-        title: "Days after being started"
+        title: `Working days until completion`
     },
     yaxis: {
         title: "# of issues"
@@ -75,10 +77,10 @@ const histogramLayout: Layout = {
 const likelyHoodLayout: Layout = {
     title: "Completion Ratio",
     xaxis: {
-        title: "Days after being started"
+        title: "Working days after being started"
     },
     yaxis: {
-        title: "% of issues completed",
+        title: `% of issues completed (total: ${issues.length}) `,
         range: [0, 100]
     }
 }
