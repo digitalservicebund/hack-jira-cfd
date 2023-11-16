@@ -54,11 +54,15 @@ describe("createPlotDataForLikelyhoods()", () => {
         expect(result.y).toBeArray();
     })
 
-    test("should return 100 percent at the last datapoint", () => {
-        expect(_.last(<number[]>result.y)).toEqual(100)
-    })
-
-    test("should return as many percentages as the input has entries", () => {
-        expect(result.y).toHaveLength(input.length)
-    })
+        test("should return 100 percent at the last datapoint", () => {
+            expect(_.last(<number[]>result.y)).toEqual(100)
+        })
+        
+        test("should return as many percentages as the input has entries", () => {
+            expect(result.y).toHaveLength(input.length)
+        })
+        
+        test("should return ~66.6% at 2 days", () => {
+            expect((<number[]>result.y)[0]).toEqual((2/3) * 100)
+        })
 })
