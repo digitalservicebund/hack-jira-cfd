@@ -1,6 +1,6 @@
 import { create } from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
-import { plot, Plot } from "nodeplotlib"
+import { plot, Plot, Layout } from "nodeplotlib"
 
 export function plotCycleTimeHistogram(cycleTimeHistogramData: CycleTimeHistogramEntry[]): void {
     const data: Plot[] = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
@@ -11,9 +11,11 @@ export function plotCycleTimeHistogram(cycleTimeHistogramData: CycleTimeHistogra
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot[] {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
     const yValues = cycleTimeHistogram.map(entry => entry.issueCount)
-    const result = [{
+    const result: Plot[] = [{
         x: xValues,
-        y: yValues
+        y: yValues,
+        type: "bar"
     }]
+
     return result;
 }
