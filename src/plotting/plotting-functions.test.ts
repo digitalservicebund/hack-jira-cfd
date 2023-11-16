@@ -25,4 +25,8 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
     test("should return the number of days in 'x' property", () => {
         expect(result[0].x).toEqual([2, 3])
     })
+
+    test("should return the issue count in 'y' property", () => {
+        expect(result[0].y).toEqual([2, 1])
+    })
 })
