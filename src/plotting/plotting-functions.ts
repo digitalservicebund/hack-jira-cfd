@@ -21,3 +21,7 @@ export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTi
 
     return result;
 }
+
+export function createPlotDataForLikelyhoods(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
+    return {}
+}
