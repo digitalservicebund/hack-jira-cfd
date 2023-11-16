@@ -1,6 +1,7 @@
-import { create } from "lodash";
+import * as _ from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { plot, Plot, Layout } from "nodeplotlib"
+import { cumsum } from "mathjs";
 
 export function plotCycleTimeHistogram(cycleTimeHistogramData: CycleTimeHistogramEntry[]): void {
     const data: Plot[] = [
@@ -23,9 +24,19 @@ export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTi
 }
 
 export function createPlotDataForLikelyhoods(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
+    const totalIssueCount = _.sum(cycleTimeHistogram.map(e => e.issueCount))
+    const histogramIssueCounts = cycleTimeHistogram.map(e => e.issueCount)
+    const histogramIssueCountSums = valuesSummedUp(histogramIssueCounts)
+
+    const yValues = histogramIssueCountSums.map(e => e / totalIssueCount * 100)
     const result: Plot = {
         x: [],
-        y: [0, 100]
+        y: yValues
     }
     return result
+}
+
+export function valuesSummedUp(values: number[]): number[] {
+    const cumulativeSum = cumsum(values)
+    return <number[]>cumsum(values)
 }

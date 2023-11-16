@@ -35,8 +35,6 @@ const stats = await Promise.all(
     })
 )
 
-console.log(JSON.stringify(stats, null, 2));
-
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 
 plotCycleTimeHistogram(cycleTimeHistogramData)
