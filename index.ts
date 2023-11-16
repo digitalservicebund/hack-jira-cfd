@@ -1,6 +1,8 @@
 import { JsxEmit } from "typescript";
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
+import { plotCycleTimeHistogram } from "./src/plotting/plotting-functions";
+import { CycleTimeHistogramEntry, getCycleTimeHistogram } from "./src/core/core-functions";
 
 console.log("Started");
 
@@ -34,6 +36,10 @@ const stats = await Promise.all(
 )
 
 console.log(JSON.stringify(stats, null, 2));
+
+const cycleTimeHistogramData = getCycleTimeHistogram(stats)
+
+plotCycleTimeHistogram(cycleTimeHistogramData)
 
 
 console.log("Done");
