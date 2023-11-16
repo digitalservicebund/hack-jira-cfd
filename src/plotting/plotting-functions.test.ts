@@ -29,4 +29,8 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
     test("should return the issue count in 'y' property", () => {
         expect(result[0].y).toEqual([2, 1])
     })
+
+    test("should return 'bar' in 'type' property", () => {
+        expect(result[0].type).toEqual('bar')
+    })
 })
