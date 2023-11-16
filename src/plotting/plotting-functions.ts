@@ -14,8 +14,10 @@ export function plotCycleTimeHistogram(cycleTimeHistogramData: CycleTimeHistogra
 }
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot[] {
+    const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
+    // const yValues = cycleTimeHistogram.map(entry => entry.issueCount)
     const result = [{
-        x: [],
+        x: xValues,
         y: []
     }]
     return result;
