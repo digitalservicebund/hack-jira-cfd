@@ -8,17 +8,17 @@ export interface CycleTimeHistogramEntry {
 }
 
 export function getCycleTimeHistogram(issues: Issue[]): CycleTimeHistogramEntry[] {
-    const durations = issues.map(issue => {
-        const durationDays = differenceInBusinessDays(issue.resolutionDate, issue.startedDate!)
-        return durationDays
+    const cycleTimes = issues.map(issue => {
+        const cycleTimeInDays = differenceInBusinessDays(issue.resolutionDate, issue.startedDate!)
+        return cycleTimeInDays
     })
     
-    const durationsHistogramDictionary = _.countBy(durations, _.identity)
+    const cycleTimeHistogramDictionary = _.countBy(cycleTimes, _.identity)
 
-    const durationsHistogram = _.keys(durationsHistogramDictionary).map(key => ({
+    const cycleTimeHistogram = _.keys(cycleTimeHistogramDictionary).map(key => ({
         numberOfDays: parseInt(key, 10),
-        issueCount: durationsHistogramDictionary[key]
+        issueCount: cycleTimeHistogramDictionary[key]
     }))
     
-    return durationsHistogram;
+    return cycleTimeHistogram;
 }
