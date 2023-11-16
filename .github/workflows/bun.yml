@@ -1,4 +1,4 @@
-name: Poor man's CI
+name: CI via GitHub Actions
 
 on:
   push:
