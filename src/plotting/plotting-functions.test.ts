@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
+import { Plot } from "nodeplotlib";
 
 describe("createPlotDataFromCycleTimeHistogram()", () => {
     const input: CycleTimeHistogramEntry[] = [{
@@ -66,16 +67,22 @@ describe("createPlotDataForLikelyhoods()", () => {
         expect(result.y).toBeArray();
     })
 
-    test("should return 100 percent at the last datapoint", () => {
-        expect(_.last(<number[]>result.y)).toEqual(100)
+    describe("y values", () => {  
+        test("should return 100 percent at the last datapoint", () => {
+            expect(_.last(<number[]>result.y)).toEqual(100)
+        })
+        
+        test("should return as many percentages as the input has entries", () => {
+            expect(result.y).toHaveLength(input.length)
+        })
+        
+        test("should return ~66.6% as first and 100 as second value", () => {
+            expect(<number[]>result.y).toEqual([2/3*100, 100])
+        })
     })
 
-    test("should return as many percentages as the input has entries", () => {
-        expect(result.y).toHaveLength(input.length)
-    })
-
-    test("should return ~66.6% at 2 days", () => {
-        expect((<number[]>result.y)[0]).toEqual(input[0].issueCount / totalIssueCount * 100)
+    test("should return 2 and 3 as x entries", () => {
+        expect(<number[]>result.x).toEqual([2, 3])
     })
 })
 
