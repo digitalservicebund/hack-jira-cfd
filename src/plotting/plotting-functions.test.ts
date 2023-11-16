@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
+import * as _ from "lodash"
 
 describe("createPlotDataFromCycleTimeHistogram()", () => {
     const input: CycleTimeHistogramEntry[] = [{
@@ -33,6 +34,8 @@ describe("createPlotDataFromCycleTimeHistogram()", () => {
     test("should return 'bar' in 'type' property", () => {
         expect(result.type).toEqual('bar')
     })
+
+    // TODO: fill in 0 valued entries for 0, 1, etc. days if they don't exist in the dataset
 })
 
 describe("createPlotDataForLikelyhoods()", () => {
@@ -49,5 +52,9 @@ describe("createPlotDataForLikelyhoods()", () => {
     test("should return properties 'x' and 'y'", () => {
         expect(result.x).toBeArray();
         expect(result.y).toBeArray();
+    })
+
+    test("should return 100 percent at the last datapoint", () => {
+        expect(_.last(<number[]>result.y)).toEqual(100)
     })
 })
