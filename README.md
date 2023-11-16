@@ -1,3 +1,5 @@
+![GitHub Actions CI Status](https://github.com/digitalservicebund/hack-jira-cfd/actions/workflows/bun.yml/badge.svg)
+
 # hack-jira-cfd
 Get more info about the flow of work in a Jira project.
 
