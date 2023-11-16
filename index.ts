@@ -3,6 +3,7 @@ import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, ma
 import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
+import { log } from "mathjs";
 
 console.log("Started");
 
@@ -20,6 +21,10 @@ const authHeaderValue = createAuthorizationHeaderValue(hardcodedJiraData.jiraAut
 const jqlResult = await runJqlQueryAgainstJira(hardcodedJiraData.jiraJqlQuery, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
 const issues = mapJiraResponseToBusinessObjects(jqlResult)
 // check if we reached the limit of 50 results // missing #thisIsAHack
+console.log(`Found ${issues.length} issues`);
+
+process.stdout.write("Fetching details on items: ");
+
 const stats = await Promise.all(
     issues.map(async issue => {
         const issueChangelog = await getIssueChangelog(
@@ -27,13 +32,14 @@ const stats = await Promise.all(
             hardcodedJiraData.jiraApiBaseUrl,
             authHeaderValue)
         const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
-        console.log(`fetching details on ${issue.key}`)
+        process.stdout.write(`- ${issue.key}`)
         return {
             ...issue,
             startedDate
         }
     })
 )
+process.stdout.write(`. \n`)
 
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 
