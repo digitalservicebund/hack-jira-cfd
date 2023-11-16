@@ -29,8 +29,10 @@ export function createPlotDataForLikelyhoods(cycleTimeHistogram: CycleTimeHistog
     const histogramIssueCountSums = valuesSummedUp(histogramIssueCounts)
 
     const yValues = histogramIssueCountSums.map(e => e / totalIssueCount * 100)
+    const xValues = cycleTimeHistogram.map(e => e.numberOfDays)
+    
     const result: Plot = {
-        x: [],
+        x: xValues,
         y: yValues
     }
     return result
