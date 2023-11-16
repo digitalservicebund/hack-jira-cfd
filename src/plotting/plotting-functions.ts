@@ -23,5 +23,9 @@ export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTi
 }
 
 export function createPlotDataForLikelyhoods(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
-    return {}
+    const result: Plot = {
+        x: [],
+        y: []
+    }
+    return result
 }
