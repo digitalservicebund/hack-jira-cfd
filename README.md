@@ -8,6 +8,7 @@ We need a couple of environment variables set. You can use a `.env` file to do s
 * `ATLASSIAN_USER_EMAIL` - The email of the account to authenticate with
 * `ATLASSIAN_API_TOKEN` - An API token of the account to authenticate with (here's how to create: [Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/))
 * `JIRA_API_BASE_URL` - The base URL of the Jira instance you want to talk to (e.g. `https://<myCompany>.atlassian.net/rest/api/2`)
+* `JIRA_JQL_QUERY` - The query to fetch issues to report on (e.g. `project = MYPROJ AND status = Done AND created >= -30d order by created DESC`)
 ## Run the App
 * Fetch dependencies: `bun install`
 * Run once: `bun index.ts`

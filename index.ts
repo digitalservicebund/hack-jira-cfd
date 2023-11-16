@@ -10,7 +10,7 @@ const hardcodedJiraData: JiraQueryDataForFetchingIssues = {
     jiraApiBaseUrl: process.env.JIRA_API_BASE_URL!,
     jiraAuthEmail: process.env.ATLASSIAN_USER_EMAIL!,
     jiraAuthToken: process.env.ATLASSIAN_API_TOKEN!,
-    jiraJqlQuery: "project = NDISC AND status = Done AND created >= -30d order by created DESC"
+    jiraJqlQuery: process.env.JIRA_JQL_QUERY!
 }
 
 // ensureDataIsComplete() // missing #thisIsAHack
