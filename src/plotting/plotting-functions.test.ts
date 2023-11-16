@@ -48,7 +48,7 @@ describe("valuesSummedUp()", () => {
     })
 })
 
-describe.skip("createPlotDataForLikelyhoods()", () => {
+describe("createPlotDataForLikelyhoods()", () => {
     const input: CycleTimeHistogramEntry[] = [{
         numberOfDays: 2,
         issueCount: 2
