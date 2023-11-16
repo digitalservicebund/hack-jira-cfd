@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { Issue } from "./core-interfaces";
-import { getCycleTimeHistogram } from "./core-functions";
+import { CycleTimeHistogramEntry, getCycleTimeHistogram } from "./core-functions";
 
 describe("getCycleTimeHistogram", () => {
     const input: Issue[] = [{
@@ -22,7 +22,19 @@ describe("getCycleTimeHistogram", () => {
 
     const result = getCycleTimeHistogram(input)
 
-    test("to contain two entries", () => {
+    test("should contain two entries", () => {
         expect(result).toBeArrayOfSize(2)
+    })
+
+    test("should list 2 times 2 days and 1 time 3 days of duration", () => {
+        const expectedResult = <CycleTimeHistogramEntry[]>[{
+            numberOfDays: 2,
+            issueCount: 2
+        }, {
+            numberOfDays: 3,
+            issueCount: 1
+        }]
+
+        expect(result).toEqual(expectedResult)
     })
 })

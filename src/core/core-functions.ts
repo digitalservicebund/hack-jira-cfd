@@ -2,7 +2,7 @@ import { Issue } from "./core-interfaces"
 import { differenceInBusinessDays } from "date-fns"
 import * as _ from "lodash"
 
-interface CycleTimeHistogramEntry {
+export interface CycleTimeHistogramEntry {
     numberOfDays: number,
     issueCount: number
 }
@@ -19,9 +19,6 @@ export function getCycleTimeHistogram(issues: Issue[]): CycleTimeHistogramEntry[
         numberOfDays: parseInt(key, 10),
         issueCount: durationsHistogramDictionary[key]
     }))
-
-    console.log("HIST-array", durationsHistogram);
-    
     
     return durationsHistogram;
 }
