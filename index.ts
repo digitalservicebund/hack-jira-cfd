@@ -77,7 +77,7 @@ const histogramLayout: Layout = {
 const likelyHoodLayout: Layout = {
     title: "Completion Ratio",
     xaxis: {
-        title: "Working days after being started"
+        title: "Completed within x working days"
     },
     yaxis: {
         title: `% of issues completed (total: ${issues.length}) `,
