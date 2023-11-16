@@ -14,6 +14,9 @@ export function plotCycleTimeHistogram(cycleTimeHistogramData: CycleTimeHistogra
 }
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot[] {
-    const result = [{}]
+    const result = [{
+        x: [],
+        y: []
+    }]
     return result;
 }
