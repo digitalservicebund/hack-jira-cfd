@@ -1,6 +1,8 @@
 # hack-jira-cfd
 Get more info about the flow of work in a Jira project.
 
+![Two graphs. One showing a histogram of cycle times, the other showing the percentage of issues completed after x days](https://github.com/digitalservicebund/hack-jira-cfd/blob/main/res/screenshot.png)
+
 ## Configure via Environment Variables
 We need a couple of environment variables set. You can use a `.env` file to do so.
 * `ATLASSIAN_USER_EMAIL` - The email of the account to authenticate with
