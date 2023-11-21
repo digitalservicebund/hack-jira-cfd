@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-query-response-fixture";
 import { getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
+import { jiraChangelogWithoutProgressQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-without-in-progress.fixture";
 
 describe("mapJiraResponseToBusinessObjects()", () => {
     const input = jiraJqlQueryResponseBodyFixture;
@@ -32,5 +33,12 @@ describe("getDateForStartingInProgressOfIssue()", () => {
 
     test("it should return '2023-11-03T09:58:19.762+0100'", () => {
         expect(result).toEqual(new Date("2023-11-03T09:58:19.762+0100"))
+    })
+
+    test("it should return undefined if no start is found", () => {
+        const inputWithoutEverBeenStarted = jiraChangelogWithoutProgressQueryResponseBodyFixture
+        const result = getDateForStartingInProgressOfIssue(inputWithoutEverBeenStarted)
+
+        expect(result).toBeUndefined()
     })
 })
