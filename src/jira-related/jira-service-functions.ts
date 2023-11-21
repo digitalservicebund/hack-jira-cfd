@@ -21,10 +21,13 @@ export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
 }
 
 // https://digitalservicebund.atlassian.net/rest/api/2/issue/ndisc-40/changelog
-export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date {
+export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date | undefined {
     const values: any[] = issueChangelog.values
     // can we assume just one? #thisIsAHack
     const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item)))
+
+    if (!valueWithItemsFromToDoToInProgress)
+        return undefined
 
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
