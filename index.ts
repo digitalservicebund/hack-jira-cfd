@@ -4,6 +4,7 @@ import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram } fr
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { log } from "mathjs";
+import { stat } from "fs";
 
 console.log("Started");
 
@@ -23,17 +24,18 @@ const issues = mapJiraResponseToBusinessObjects(jqlResult)
 // check if we reached the limit of 50 results // missing #thisIsAHack
 console.log(`Found ${issues.length} issues`);
 
-process.stdout.write("Fetching details on items: ");
+console.log("Fetching details on items: ");
 
-const stats = await Promise.all(
+const statsIncludingUndefinedStarts = await Promise.all(
     issues.map(async issue => {
         const issueChangelog = await getIssueChangelog(
             issue.key,
             hardcodedJiraData.jiraApiBaseUrl,
             authHeaderValue)
         const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
+        const startedDateInfo = startedDate ? startedDate.toISOString() : "not found"
         console.log("- ${issue.key}: "
-            + startedDate.toISOString()
+            + startedDateInfo
             + " till "
             + issue.resolutionDate.toISOString())
         return {
@@ -42,6 +44,8 @@ const stats = await Promise.all(
         }
     })
 )
+
+const stats = statsIncludingUndefinedStarts.filter(e => e.startedDate !== undefined)
 
 console.log("Computing graph data");
 
