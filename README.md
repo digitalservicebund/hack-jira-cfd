@@ -5,6 +5,22 @@ Get more info about the flow of work in a Jira project.
 
 ![Two graphs. One showing a histogram of cycle times, the other showing the percentage of issues completed after x days](https://github.com/digitalservicebund/hack-jira-cfd/blob/main/res/screenshot.png)
 
+# Features
+
+✅ Run query against Jira cloud fetching a collection of issues<br>
+✅ Authentication configured via environment variables (or `.env`)<br>
+✅ Query configured via env vars as well <br>
+✅ Fetch changelog of issues <br>
+✅ Determine date of issue going into "In Progress"<br>
+❌ "In Progress" state configured via env vars (currently hard coded as "In Progress")<br>
+✅ Calculate data for a cycle time histogram (# of days between going into "In Progress" and the issue's `resolutionDate`) <br>
+✅ Draw the histogram, show the user <br>
+✅ Calculate data for a cycle time graph showing what percentage of all issues was completed in what period of time <br>
+✅ Draw the cycle time percentages graph <br>
+
+
+# Running / Dev
+
 ## Configure via Environment Variables
 We need a couple of environment variables set. You can use a `.env` file to do so.
 * `ATLASSIAN_USER_EMAIL` - The email of the account to authenticate with
