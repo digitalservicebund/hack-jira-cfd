@@ -5,9 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug File",
             "type": "bun",
             "request": "launch",
-            "name": "Debug File",
             "program": "${file}",
             "cwd": "${workspaceFolder}",
             "stopOnEntry": false,
@@ -15,9 +15,9 @@
             "internalConsoleOptions": "neverOpen"
         },
         {
+            "name": "Run File",
             "type": "bun",
             "request": "launch",
-            "name": "Run File",
             "program": "${file}",
             "cwd": "${workspaceFolder}",
             "noDebug": true,
