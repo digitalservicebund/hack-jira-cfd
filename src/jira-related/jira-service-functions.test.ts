@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-query-response-fixture";
-import { getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
+import { getAllStateChangesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
 import { jiraChangelogWithoutProgressQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-without-in-progress.fixture";
 
@@ -40,5 +40,14 @@ describe("getDateForStartingInProgressOfIssue()", () => {
         const result = getDateForStartingInProgressOfIssue(inputWithoutEverBeenStarted)
 
         expect(result).toBeUndefined()
+    })
+})
+
+describe("getAllStateChangesWithDates()", () => {
+    const input = jiraChangelogQueryResponseBodyFixture
+    const result = getAllStateChangesWithDates(input)
+
+    test("it should return three states", () => {
+        expect(result).toHaveLength(2)
     })
 })
