@@ -17,9 +17,11 @@ Get more info about the flow of work in a Jira Cloud project.
 ❌ Deal with issues that were moved in and out of "In Progress" multiple times <br>
 ✅ Calculate data for a cycle time histogram (# of days between going into "In Progress" and the issue's `resolutionDate`) <br>
 ✅ Ignore issues that never went into "In Progress"
-✅ Draw the histogram, show the user <br>
+✅ Display the histogram, show the user <br>
 ✅ Calculate data for a cycle time graph showing what percentage of all issues was completed in what period of time <br>
-✅ Draw the cycle time percentages graph <br>
+✅ Display the cycle time percentages graph <br>
+❌ Calculate data for a Cumulative Flow Diagram <br>
+❌ Display a Cumulative Flow Diagram <br>
 
 
 
