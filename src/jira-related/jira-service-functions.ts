@@ -32,14 +32,36 @@ export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date |
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
 
-function itemComesFromToDo(item: any) {
+function itemComesFromToDo(item: any): boolean {
     return item.fromString === "To Do"
 }
 
-function itemGoesToInProgress(item: any) {
+function itemGoesToInProgress(item: any): boolean {
     return item.toString === "In Progress"
 }
 
-function itemIsTransitionToInProgress(item: any) {
+function itemIsTransitionToInProgress(item: any): boolean {
     return itemComesFromToDo(item) && itemGoesToInProgress(item)
+}
+
+interface StateWithDate {
+    stateName: string,
+    stateReachedDate: Date
+}
+
+export function getAllStateChangesWithDates(issueChangelog: any): StateWithDate[] {
+    const valuesWithStateChanges = issueChangelog.values.filter((v: any) => _.some(v.items, (item: any) => item.fieldId === "status"))
+    const stateChanges: StateWithDate[] = valuesWithStateChanges.map((v: any) => {
+        const items = v.items
+        const itemWithStateInfo = items.filter((i: any) => i.fieldId === "status")
+
+        return itemWithStateInfo.map((i: any) => {
+            return <StateWithDate>{
+                stateName: i.toString,
+                stateReachedDate: v.created
+            }
+        })
+    })
+
+    return valuesWithStateChanges
 }
