@@ -47,7 +47,12 @@ describe("getAllStateChangesWithDates()", () => {
     const input = jiraChangelogQueryResponseBodyFixture
     const result = getAllStateChangesWithDates(input)
 
-    test("it should return three states", () => {
+    test("it should return two states", () => {
         expect(result).toHaveLength(2)
+    })
+
+    test("it should return date '2023-11-03T09:58:19.762+0100' for 'In Progress' state change", () => {
+        const inProgressStateChange = result.find(r => r.stateName === "In Progress")
+        expect(inProgressStateChange!.stateName).toEqual("2023-11-03T09:58:19.762+0100")
     })
 })
