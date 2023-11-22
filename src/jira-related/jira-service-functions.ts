@@ -51,17 +51,17 @@ interface StateWithDate {
 
 export function getAllStateChangesWithDates(issueChangelog: any): StateWithDate[] {
     const valuesWithStateChanges = issueChangelog.values.filter((v: any) => _.some(v.items, (item: any) => item.fieldId === "status"))
-    const stateChanges: StateWithDate[] = valuesWithStateChanges.map((v: any) => {
+    const stateChanges: StateWithDate[] = _.flattenDeep(valuesWithStateChanges.map((v: any) => {
         const items = v.items
         const itemWithStateInfo = items.filter((i: any) => i.fieldId === "status")
 
         return itemWithStateInfo.map((i: any) => {
             return <StateWithDate>{
                 stateName: i.toString,
-                stateReachedDate: v.created
+                stateReachedDate: new Date(v.created)
             }
         })
-    })
+    }))
 
-    return valuesWithStateChanges
+    return stateChanges
 }
