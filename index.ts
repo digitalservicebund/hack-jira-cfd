@@ -79,7 +79,7 @@ const histogramLayout: Layout = {
 }
 
 const percentagesLayout: Layout = {
-    title: "Completion Ratio",
+    title: "Cycle Time Percentages",
     xaxis: {
         title: "Completed within x working days"
     },
