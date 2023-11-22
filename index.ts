@@ -1,6 +1,6 @@
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
-import { createPlotDataForLikelyhoods, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
+import { createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { log } from "mathjs";
@@ -51,7 +51,7 @@ console.log("Computing graph data");
 
 const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
-const likelyhoodPlotData = createPlotDataForLikelyhoods(cycleTimeHistogramData)
+const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
 const histogramPlot: Plot = {
     ...histogramPlotData,
@@ -60,12 +60,12 @@ const histogramPlot: Plot = {
 
 console.log(histogramPlot);
 
-const likelyhoodPlot: Plot = {
-    ...likelyhoodPlotData,
+const percentagesPlot: Plot = {
+    ...percentagesPlotData,
     type: "scatter"
 }
 
-console.log(likelyhoodPlot);
+console.log(percentagesPlot);
 
 
 const histogramLayout: Layout = {
@@ -78,7 +78,7 @@ const histogramLayout: Layout = {
     }
 }
 
-const likelyHoodLayout: Layout = {
+const percentagesLayout: Layout = {
     title: "Completion Ratio",
     xaxis: {
         title: "Completed within x working days"
@@ -90,7 +90,7 @@ const likelyHoodLayout: Layout = {
 }
 
 plot([histogramPlot], histogramLayout)
-plot([likelyhoodPlot], likelyHoodLayout)
+plot([percentagesPlot], percentagesLayout)
 
 
 console.log("Done");

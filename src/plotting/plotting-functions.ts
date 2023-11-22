@@ -14,14 +14,14 @@ export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTi
     return result;
 }
 
-export function createPlotDataForLikelyhoods(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
+export function createPlotDataForPercentages(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const totalIssueCount = _.sum(cycleTimeHistogram.map(e => e.issueCount))
     const histogramIssueCounts = cycleTimeHistogram.map(e => e.issueCount)
     const histogramIssueCountSums = valuesSummedUp(histogramIssueCounts)
 
     const yValues = histogramIssueCountSums.map(e => e / totalIssueCount * 100)
     const xValues = cycleTimeHistogram.map(e => e.numberOfDays)
-    
+
     const result: Plot = {
         x: xValues,
         y: yValues
