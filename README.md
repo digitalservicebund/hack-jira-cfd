@@ -41,3 +41,7 @@ We need a couple of environment variables set. You can use a `.env` file to do s
 ## Test
 * Run tests once: `bun test`
 * Run in watch mode: `bun --watch test`
+
+
+# Contributing
+Cf. [`Contributing.md`](./Contributing.md)
