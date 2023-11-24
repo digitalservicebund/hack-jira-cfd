@@ -84,10 +84,9 @@ describe("createPlotDataForPercentages()", () => {
     })
 })
 
-describe("createDataForCfd()", () => { 
-    const issues: Issue[] = []
+describe("createDataForCfd()", () => {
     const statesWithDates: StateWithDate[] = []
-    const result = createPlotDataForCfd(issues, statesWithDates)
+    const result = createPlotDataForCfd(statesWithDates)
 
     test("it should have '2023-10-30' as the first x value", () => {
         expect(result.x![0]).toEqual("2023-10-30")
