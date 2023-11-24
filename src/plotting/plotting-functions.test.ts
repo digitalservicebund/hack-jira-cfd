@@ -82,6 +82,17 @@ describe("createPlotDataForPercentages()", () => {
     })
 })
 
+// TODO: 
+
+// getFirstAndLastDate() must work on multiple arrays of statesWithDates
+
+// calculate interval across all statesWithDates arrays
+
+// for each day of the interval
+// => determine state of each ticket
+// => count the tickets for each state
+// => create a plotting  dataset for each state
+
 describe("createDataForCfd()", () => {
     const statesWithDates: StateWithDate[] = [
         {
