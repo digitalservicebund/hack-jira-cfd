@@ -69,7 +69,12 @@ export function getAllStateChangesWithDates(issueChangelog: any): StateWithDate[
 export function getAllStatesWithDates(issue: Issue, issueChangelog: any): StateWithDate[] {
     const initialState: StateWithDate = {
         stateName: "Created",
-        stateReachedDate: issueChangelog
+        stateReachedDate: issue.createdDate
     }
-    return []
+    const stateChanges = getAllStateChangesWithDates(issueChangelog)
+    const result = [
+        initialState,
+        ...stateChanges
+    ]
+    return result
 }
