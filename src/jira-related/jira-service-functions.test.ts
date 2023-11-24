@@ -60,8 +60,9 @@ describe("getAllStateChangesWithDates()", () => {
 })
 
 describe("getAllStatesWithDates()", () => {
-    const input = jiraChangelogQueryResponseBodyFixture
-    const result = getAllStatesWithDates(input)
+    const item = jiraJqlQueryResponseBodyFixture.issues[0]
+    const changelog = jiraChangelogQueryResponseBodyFixture
+    const result = getAllStatesWithDates(item, changelog)
 
     test("it should return 3 states: created, In Progress, Done", () => {
         expect(result).toHaveLength(3)
