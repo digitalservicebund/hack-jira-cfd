@@ -1,9 +1,9 @@
 import * as _ from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
-import { plot, Plot, Layout } from "nodeplotlib"
+import { Plot } from "nodeplotlib"
 import { cumsum } from "mathjs";
 import { StateWithDate } from "../jira-related/jira-service-functions";
-import { Issue } from "../core/core-interfaces";
+import { eachDayOfInterval } from "date-fns";
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
@@ -43,8 +43,14 @@ export function createPlotDataForCfd(statesWithDates: StateWithDate[]): Plot {
     console.log(JSON.stringify(dates));
 
     const datesSorted = sortDates(dates)
+
+    const startDate = _.first(datesSorted)
+    const endDate = _.last(datesSorted)
+
+    const dateList = eachDayOfInterval({start: startDate!, end: endDate!})
+
     const result: Plot = {
-        x: [datesSorted[0], datesSorted[datesSorted.length - 1]],
+        x: dateList,
         y: []
     }
 
