@@ -1,8 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, valuesSummedUp } from "./plotting-functions";
+import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
 import { Plot } from "nodeplotlib";
+import { Issue } from "../core/core-interfaces";
+import { StateWithDate } from "../jira-related/jira-service-functions";
 
 describe("createPlotDataFromCycleTimeHistogram()", () => {
     const input: CycleTimeHistogramEntry[] = [{
@@ -82,3 +84,12 @@ describe("createPlotDataForPercentages()", () => {
     })
 })
 
+describe("createDataForCfd()", () => { 
+    const issues: Issue[] = []
+    const statesWithDates: StateWithDate[] = []
+    const result = createPlotDataForCfd(issues, statesWithDates)
+
+    test("it should have '2023-10-30' as the first x value", () => {
+        expect(result.x![0]).toEqual("2023-10-30")
+    })
+})

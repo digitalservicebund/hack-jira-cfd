@@ -2,6 +2,8 @@ import * as _ from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { plot, Plot, Layout } from "nodeplotlib"
 import { cumsum } from "mathjs";
+import { StateWithDate } from "../jira-related/jira-service-functions";
+import { Issue } from "../core/core-interfaces";
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
@@ -32,4 +34,13 @@ export function createPlotDataForPercentages(cycleTimeHistogram: CycleTimeHistog
 export function valuesSummedUp(values: number[]): number[] {
     const cumulativeSum = cumsum(values)
     return <number[]>cumsum(values)
+}
+
+export function createPlotDataForCfd(issues: Issue[], statesWithDates: StateWithDate[]): Plot {
+    const result: Plot = {
+        x: [],
+        y: []
+    }
+
+    return result
 }

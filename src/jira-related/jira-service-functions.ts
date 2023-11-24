@@ -44,7 +44,7 @@ function itemIsTransitionToInProgress(item: any): boolean {
     return itemComesFromToDo(item) && itemGoesToInProgress(item)
 }
 
-interface StateWithDate {
+export interface StateWithDate {
     stateName: string,
     stateReachedDate: Date
 }
