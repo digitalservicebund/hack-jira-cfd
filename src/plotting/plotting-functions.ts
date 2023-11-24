@@ -37,11 +37,16 @@ export function valuesSummedUp(values: number[]): number[] {
 }
 
 export function createPlotDataForCfd(statesWithDates: StateWithDate[]): Plot {
-    const cre
+    const dates = statesWithDates.map(s => s.stateReachedDate)
+    const datesSorted = sortDates(dates)
     const result: Plot = {
         x: [],
         y: []
     }
 
     return result
+}
+
+export function sortDates(dates: Date[]): Date[] {
+    return dates;
 }
