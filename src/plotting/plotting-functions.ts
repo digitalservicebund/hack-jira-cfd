@@ -48,5 +48,6 @@ export function createPlotDataForCfd(statesWithDates: StateWithDate[]): Plot {
 }
 
 export function sortDates(dates: Date[]): Date[] {
+    const result = dates.sort((a, b) => a.getTime() - b.getTime())
     return dates;
 }
