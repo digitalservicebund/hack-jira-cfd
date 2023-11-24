@@ -60,11 +60,17 @@ describe("getAllStateChangesWithDates()", () => {
 })
 
 describe("getAllStatesWithDates()", () => {
-    const item = jiraJqlQueryResponseBodyFixture.issues[0]
+    const queryResponse = jiraJqlQueryResponseBodyFixture.issues[0]
+    const items = mapJiraResponseToBusinessObjects(queryResponse)
     const changelog = jiraChangelogQueryResponseBodyFixture
-    const result = getAllStatesWithDates(item, changelog)
+    const result = getAllStatesWithDates(items[0], changelog)
 
     test("it should return 3 states: created, In Progress, Done", () => {
         expect(result).toHaveLength(3)
+    })
+
+    test("it should return 'created' as the creation state and '2023-11-02T10:02:34.255+0100' as the creation date", () => {
+        expect(result[0].stateName).toEqual("created")
+        expect(result[0].stateReachedDate).toEqual(new Date("2023-11-02T10:02:34.255+0100"))
     })
 })
