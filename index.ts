@@ -67,6 +67,19 @@ const percentagesPlot: Plot = {
 
 console.log(percentagesPlot);
 
+const cfdPlot: Plot = {
+    x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
+    y: [1, 2, 3],
+    name: "To Do",
+    type: "bar"
+}
+const cfdPlot2: Plot = {
+    x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
+    y: [2, 3, 4],
+    name: "In Progress",
+    type: "bar"
+}
+
 
 const histogramLayout: Layout = {
     title: `Cycle Time Histogram (In Progress -> Done)<br>(${process.env.JIRA_JQL_QUERY})`,
@@ -89,8 +102,14 @@ const percentagesLayout: Layout = {
     }
 }
 
+const cfdLayout: Layout = {
+    barmode: "stack",
+    title: "Made up CFD (placeholder)"
+}
+
 plot([histogramPlot], histogramLayout)
 plot([percentagesPlot], percentagesLayout)
+plot([cfdPlot, cfdPlot2], cfdLayout)
 
 
 console.log("Done");
