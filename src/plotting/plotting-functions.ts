@@ -44,7 +44,7 @@ export function createPlotDataForCfd(statesWithDates: StateWithDate[]): Plot {
 
     const datesSorted = sortDates(dates)
     const result: Plot = {
-        x: [datesSorted[0]],
+        x: [datesSorted[0], datesSorted[datesSorted.length - 1]],
         y: []
     }
 
