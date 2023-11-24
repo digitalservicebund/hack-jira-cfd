@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-query-response-fixture";
-import { getAllStateChangesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
+import { getAllStateChangesWithDates, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
 import { jiraChangelogWithoutProgressQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-without-in-progress.fixture";
 
@@ -54,7 +54,16 @@ describe("getAllStateChangesWithDates()", () => {
     test("it should return date '2023-11-03T09:58:19.762+0100' for 'In Progress' state change", () => {
         console.log("RESULT", JSON.stringify(result, null, 2))
         const inProgressStateChange = result.find(r => r.stateName === "In Progress")
-        
+
         expect(inProgressStateChange!.stateReachedDate).toEqual(new Date("2023-11-03T09:58:19.762+0100"))
+    })
+})
+
+describe("getAllStatesWithDates()", () => {
+    const input = jiraChangelogQueryResponseBodyFixture
+    const result = getAllStatesWithDates()
+
+    test("it should return 3 states: created, In Progress, Done", () => {
+        expect(result).toHaveLength(3)
     })
 })

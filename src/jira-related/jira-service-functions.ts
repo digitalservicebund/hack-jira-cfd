@@ -65,3 +65,7 @@ export function getAllStateChangesWithDates(issueChangelog: any): StateWithDate[
 
     return stateChanges
 }
+
+export function getAllStatesWithDates(issueChangelog: any): StateWithDate[] {
+    return []
+}
