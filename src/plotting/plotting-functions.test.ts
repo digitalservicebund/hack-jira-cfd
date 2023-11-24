@@ -86,11 +86,11 @@ describe("createDataForCfd()", () => {
     const statesWithDates: StateWithDate[] = [
         {
             stateName: "resolved",
-            stateReachedDate: new Date("2023-03-03")
+            stateReachedDate: new Date("2023-01-04")
         },
         {
             stateName: "To Do",
-            stateReachedDate: new Date("2023-02-02")
+            stateReachedDate: new Date("2023-01-02")
         },
         {
             stateName: "created",
@@ -101,6 +101,10 @@ describe("createDataForCfd()", () => {
 
     test("it should have '2023-01-01' as the first x value", () => {
         expect(result.x![0]).toEqual(new Date("2023-01-01"))
+    })
+
+    test("it should have '2023-01-04' as last x value", () => {
+        expect(_.last(<Date[]>result.x)).toEqual(new Date("2023-01-04"))
     })
 })
 
