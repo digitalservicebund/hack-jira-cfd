@@ -2,8 +2,6 @@ import { describe, expect, test } from "bun:test";
 import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, sortDates, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
-import { Plot } from "nodeplotlib";
-import { Issue } from "../core/core-interfaces";
 import { StateWithDate } from "../jira-related/jira-service-functions";
 
 describe("createPlotDataFromCycleTimeHistogram()", () => {
@@ -85,11 +83,24 @@ describe("createPlotDataForPercentages()", () => {
 })
 
 describe("createDataForCfd()", () => {
-    const statesWithDates: StateWithDate[] = []
+    const statesWithDates: StateWithDate[] = [
+        {
+            stateName: "resolved",
+            stateReachedDate: new Date("2023-03-03")
+        },
+        {
+            stateName: "To Do",
+            stateReachedDate: new Date("2023-02-02")
+        },
+        {
+            stateName: "created",
+            stateReachedDate: new Date("2023-01-01")
+        }
+    ]
     const result = createPlotDataForCfd(statesWithDates)
 
-    test("it should have '2023-10-30' as the first x value", () => {
-        expect(result.x![0]).toEqual("2023-10-30")
+    test("it should have '2023-01-01' as the first x value", () => {
+        expect(result.x![0]).toEqual(new Date("2023-01-01"))
     })
 })
 
@@ -102,9 +113,9 @@ describe("sortDates()", () => {
 
     const result = sortDates(dates)
 
-    test("should order ascending", ()=> {
+    test("should order ascending", () => {
         expect(result).toEqual([
-            new Date("2023-01-01"), 
+            new Date("2023-01-01"),
             new Date("2023-02-02"),
             new Date("2023-03-03")
         ])
