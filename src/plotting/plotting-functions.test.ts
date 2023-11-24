@@ -106,6 +106,15 @@ describe("createDataForCfd()", () => {
     test("it should have '2023-01-04' as last x value", () => {
         expect(_.last(<Date[]>result.x)).toEqual(new Date("2023-01-04"))
     })
+
+    test("it should have all days between first and last date as x values", () => {
+        expect(result.x).toEqual([
+            new Date("2023-01-01"),
+            new Date("2023-01-02"),
+            new Date("2023-01-03"),
+            new Date("2023-01-04")
+        ])
+    })
 })
 
 describe("sortDates()", () => {
