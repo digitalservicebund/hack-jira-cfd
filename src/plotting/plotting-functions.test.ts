@@ -91,22 +91,37 @@ describe("createPlotDataForPercentages()", () => {
 // for each day of the interval
 // => determine state of each ticket
 // => count the tickets for each state
-// => create a plotting  dataset for each state
+// => return an array of a plotting datasets, one for each state
 
 describe("createDataForCfd()", () => {
-    const statesWithDates: StateWithDate[] = [
-        {
-            stateName: "resolved",
-            stateReachedDate: new Date("2023-01-04")
-        },
-        {
-            stateName: "To Do",
-            stateReachedDate: new Date("2023-01-02")
-        },
-        {
-            stateName: "created",
-            stateReachedDate: new Date("2023-01-01")
-        }
+    const statesWithDates: StateWithDate[][] = [
+        [
+            {
+                stateName: "resolved",
+                stateReachedDate: new Date("2023-01-04")
+            },
+            {
+                stateName: "To Do",
+                stateReachedDate: new Date("2023-01-02")
+            },
+            {
+                stateName: "created",
+                stateReachedDate: new Date("2023-01-01")
+            }
+        ], [
+            {
+                stateName: "resolved",
+                stateReachedDate: new Date("2023-01-05")
+            },
+            {
+                stateName: "To Do",
+                stateReachedDate: new Date("2023-01-04")
+            },
+            {
+                stateName: "created",
+                stateReachedDate: new Date("2023-01-03")
+            }
+        ]
     ]
     const result = createPlotDataForCfd(statesWithDates)
 
