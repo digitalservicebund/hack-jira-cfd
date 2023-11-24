@@ -36,8 +36,8 @@ export function valuesSummedUp(values: number[]): number[] {
     return <number[]>cumsum(values)
 }
 
-export function createPlotDataForCfd(statesWithDates: StateWithDate[][]): Plot {
-    const dates = statesWithDates.map(s => s.stateReachedDate)
+export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): Plot[] {
+    const dates = _.flattenDeep(statesWithDatesArray.map(swd => swd.map(s => s.stateReachedDate)))
     const datesSorted = sortDates(dates)
 
     const startDate = _.first(datesSorted)
@@ -52,7 +52,7 @@ export function createPlotDataForCfd(statesWithDates: StateWithDate[][]): Plot {
 
     console.log("RESULT", JSON.stringify(result, null, 2));
 
-    return result
+    return [result]
 }
 
 export function sortDates(dates: Date[]): Date[] {
