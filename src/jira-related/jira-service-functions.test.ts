@@ -52,7 +52,6 @@ describe("getAllStateChangesWithDates()", () => {
     })
 
     test("it should return date '2023-11-03T09:58:19.762+0100' for 'In Progress' state change", () => {
-        console.log("RESULT", JSON.stringify(result, null, 2))
         const inProgressStateChange = result.find(r => r.stateName === "In Progress")
 
         expect(inProgressStateChange!.stateReachedDate).toEqual(new Date("2023-11-03T09:58:19.762+0100"))
