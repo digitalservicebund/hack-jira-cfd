@@ -125,20 +125,23 @@ describe("createDataForCfd()", () => {
     ]
     const result = createPlotDataForCfd(statesWithDates)
 
-    test("it should have '2023-01-01' as the first x value", () => {
-        expect(result.x![0]).toEqual(new Date("2023-01-01"))
+    const firstPlot = result[0]
+
+    test("it should have '2023-01-01' as the first x value of first ", () => {
+        expect(firstPlot.x![0]).toEqual(new Date("2023-01-01"))
     })
 
     test("it should have '2023-01-04' as last x value", () => {
-        expect(_.last(<Date[]>result.x)).toEqual(new Date("2023-01-04"))
+        expect(_.last(<Date[]>firstPlot.x)).toEqual(new Date("2023-01-05"))
     })
 
     test("it should have all days between first and last date as x values", () => {
-        expect(result.x).toEqual([
+        expect(firstPlot.x).toEqual([
             new Date("2023-01-01"),
             new Date("2023-01-02"),
             new Date("2023-01-03"),
-            new Date("2023-01-04")
+            new Date("2023-01-04"),
+            new Date("2023-01-05"),
         ])
     })
 })
