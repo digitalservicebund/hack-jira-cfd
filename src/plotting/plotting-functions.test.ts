@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, sortDates, valuesSummedUp } from "./plotting-functions";
+import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, getStatesCountsPerDay, sortDates, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
 import { StateWithDate } from "../jira-related/jira-service-functions";
@@ -157,6 +157,30 @@ describe("createDataForCfd()", () => {
 
         // TODO: counts of "In Progress"
         // TODO: counts of "resolved" <-- maybe not necessary
+    })
+})
+
+describe("getStatesCountsPerDay()", () => {
+    const day = new Date("2023-01-01")
+    const statesWithDates: StateWithDate[] = [
+            {
+                stateName: "resolved",
+                stateReachedDate: new Date("2023-01-04")
+            },
+            {
+                stateName: "To Do",
+                stateReachedDate: new Date("2023-01-02")
+            },
+            {
+                stateName: "created",
+                stateReachedDate: new Date("2023-01-01")
+            }
+        ]
+    
+
+    test("it should return 1 for '2023-01-01' and state 'created' ", () => {
+        const result = getStatesCountsPerDay(day, "created", statesWithDates)
+        expect(result).toEqual(1)
     })
 })
 
