@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { Plot } from "nodeplotlib"
-import { cumsum } from "mathjs";
+import { cumsum, index } from "mathjs";
 import { StateWithDate } from "../jira-related/jira-service-functions";
 import { eachDayOfInterval } from "date-fns";
 
@@ -36,15 +36,34 @@ export function valuesSummedUp(values: number[]): number[] {
     return <number[]>cumsum(values)
 }
 
+interface StatesCountsPerDay {
+    day: Date;
+    statesCounts: [
+        {
+            stateName: string;
+            stateCount: number;
+        }
+    ]
+
+}
+
 export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): Plot[] {
+    // get dates
     const dates = _.flattenDeep(statesWithDatesArray.map(swd => swd.map(s => s.stateReachedDate)))
     const datesSorted = sortDates(dates)
-
     const startDate = _.first(datesSorted)
     const endDate = _.last(datesSorted)
-
     const dateList = eachDayOfInterval({ start: startDate!, end: endDate! })
 
+    // hardcoded states #thisIsAHack
+    const statesInSequence = [
+        "created",
+        "To Do",
+        "Done"
+    ]
+
+    const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day=> getStatesCountsPerDay(day, statesWithDatesArray))
+    
     const result: Plot = {
         x: dateList,
         y: []
@@ -53,6 +72,20 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     console.log("RESULT", JSON.stringify(result, null, 2));
 
     return [result]
+}
+
+export function getStatesCountsPerDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): number {
+    const statesWithDatesSorted = _.sortBy(statesWithDates, s => s.stateReachedDate)
+    const stateWithDateIndex = statesWithDatesSorted.findIndex(s => s.stateName === stateName)
+    const stateWithDate = statesWithDatesSorted[stateWithDateIndex]
+    // TODO: what if it's the last one?
+    const nextStateWithDate = statesWithDatesSorted[stateWithDateIndex + 1]
+
+    const daysCoveredByState = eachDayOfInterval({start: stateWithDate.stateReachedDate, end: nextStateWithDate.stateReachedDate})
+
+    // TODO: what about not found?
+    if (daysCoveredByState.includes(day)) return 1
+    else return 0
 }
 
 export function sortDates(dates: Date[]): Date[] {
