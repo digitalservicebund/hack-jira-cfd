@@ -53,7 +53,10 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     const datesSorted = sortDates(dates)
     const startDate = _.first(datesSorted)
     const endDate = _.last(datesSorted)
-    const dateList = eachDayOfInterval({ start: startDate!, end: endDate! })
+    const dateList = eachDayOfInterval({
+        start: startDate!,
+        end: endDate!
+    })
 
     // hardcoded states #thisIsAHack
     const statesInSequence = [
@@ -62,11 +65,26 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         "Done"
     ]
 
+    const statesCounts: StatesCountsPerDay[] = dateList.map(date => {
+        const count = _.sum(statesWithDatesArray.map(swd => {
+            return inStateAtDay(date, "created", swd)
+        }).map(result => result === true ? 1 : 0))
+        return <StatesCountsPerDay>{
+            day: date,
+            statesCounts: [{
+                stateName: "created",
+                stateCount: count
+            }]
+        }
+    })
+
     // const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day => inStateAtDay(day, statesWithDatesArray))
 
     const result: Plot = {
-        x: dateList,
-        y: []
+        x: statesCounts.map(sc => sc.day),
+        y: statesCounts.map(sc => {
+            return sc.statesCounts.find(s => s.stateName === "created")?.stateCount!
+        })
     }
 
     console.log("RESULT", JSON.stringify(result, null, 2));
@@ -87,7 +105,7 @@ export function inStateAtDay(day: Date, stateName: string, statesWithDates: Stat
     const nextStateWithDate = statesWithDatesSorted[stateWithDateIndex + 1]
 
     if (day >= stateWithDate.stateReachedDate
-        && day <= nextStateWithDate.stateReachedDate) {
+        && day < nextStateWithDate.stateReachedDate) {
         return true
     }
     else {
