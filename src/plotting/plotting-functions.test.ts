@@ -93,7 +93,7 @@ describe("createPlotDataForPercentages()", () => {
 // => count the tickets for each state
 // => return an array of a plotting datasets, one for each state
 
-describe.skip("createDataForCfd()", () => {
+describe("createDataForCfd()", () => {
     const statesWithDates: StateWithDate[][] = [
         [
             {
