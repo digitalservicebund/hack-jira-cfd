@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, getStatesCountsPerDay, sortDates, valuesSummedUp } from "./plotting-functions";
+import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, inStateAtDay, sortDates, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
 import { StateWithDate } from "../jira-related/jira-service-functions";
@@ -125,10 +125,10 @@ describe("createDataForCfd()", () => {
     ]
     const result = createPlotDataForCfd(statesWithDates)
 
-    
+
     describe("x values", () => {
         const firstPlot = result[0]
- 
+
         test("it should have '2023-01-01' as the first x value of first ", () => {
             expect(firstPlot.x![0]).toEqual(new Date("2023-01-01"))
         })
@@ -160,37 +160,37 @@ describe("createDataForCfd()", () => {
     })
 })
 
-describe("getStatesCountsPerDay()", () => {
+describe("inStateAtDay()", () => {
     const day = new Date("2023-01-01")
     const statesWithDates: StateWithDate[] = [
-            {
-                stateName: "resolved",
-                stateReachedDate: new Date("2023-01-04")
-            },
-            {
-                stateName: "To Do",
-                stateReachedDate: new Date("2023-01-02")
-            },
-            {
-                stateName: "created",
-                stateReachedDate: new Date("2023-01-01")
-            }
-        ]
-    
+        {
+            stateName: "resolved",
+            stateReachedDate: new Date("2023-01-04")
+        },
+        {
+            stateName: "To Do",
+            stateReachedDate: new Date("2023-01-02")
+        },
+        {
+            stateName: "created",
+            stateReachedDate: new Date("2023-01-01")
+        }
+    ]
 
-    test("it should return 1 for '2023-01-01' and state 'created' as the dates match ", () => {
-        const result = getStatesCountsPerDay(day, "created", statesWithDates)
-        expect(result).toEqual(1)
+
+    test("it should return true for '2023-01-01' and state 'created' as the dates match ", () => {
+        const result = inStateAtDay(day, "created", statesWithDates)
+        expect(result).toEqual(true)
     })
 
-    test("it should return 0 for '2023-01-01' and state 'To Do' as the dates do not match", () => {
-        const result = getStatesCountsPerDay(day, "To Do", statesWithDates)
-        expect(result).toEqual(0)
+    test("it should return false for '2023-01-01' and state 'To Do' as the dates do not match", () => {
+        const result = inStateAtDay(day, "To Do", statesWithDates)
+        expect(result).toEqual(false)
     })
 
-    test("it should return 1 for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
-        const result = getStatesCountsPerDay(day, "resolved", statesWithDates)
-        expect(result).toEqual(0)
+    test("it should return true for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
+        const result = inStateAtDay(day, "resolved", statesWithDates)
+        expect(result).toEqual(true)
     })
 })
 

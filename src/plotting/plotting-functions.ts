@@ -3,7 +3,7 @@ import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { Plot } from "nodeplotlib"
 import { cumsum, index } from "mathjs";
 import { StateWithDate } from "../jira-related/jira-service-functions";
-import { eachDayOfInterval } from "date-fns";
+import { Interval, eachDayOfInterval, getDay, isWithinInterval } from "date-fns";
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
@@ -62,8 +62,8 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         "Done"
     ]
 
-    const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day=> getStatesCountsPerDay(day, statesWithDatesArray))
-    
+    // const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day => inStateAtDay(day, statesWithDatesArray))
+
     const result: Plot = {
         x: dateList,
         y: []
@@ -74,18 +74,25 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     return [result]
 }
 
-export function getStatesCountsPerDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): number {
+export function inStateAtDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): boolean {
     const statesWithDatesSorted = _.sortBy(statesWithDates, s => s.stateReachedDate)
     const stateWithDateIndex = statesWithDatesSorted.findIndex(s => s.stateName === stateName)
     const stateWithDate = statesWithDatesSorted[stateWithDateIndex]
-    // TODO: what if it's the last one?
+
+    if (stateWithDateIndex > statesWithDates.length - 2) {
+        if (day < stateWithDate.stateReachedDate) return true
+        else return false
+    }
+
     const nextStateWithDate = statesWithDatesSorted[stateWithDateIndex + 1]
 
-    const daysCoveredByState = eachDayOfInterval({start: stateWithDate.stateReachedDate, end: nextStateWithDate.stateReachedDate})
-
-    // TODO: what about not found?
-    if (daysCoveredByState.includes(day)) return 1
-    else return 0
+    if (day >= stateWithDate.stateReachedDate
+        && day <= nextStateWithDate.stateReachedDate) {
+        return true
+    }
+    else {
+        return false
+    }
 }
 
 export function sortDates(dates: Date[]): Date[] {
