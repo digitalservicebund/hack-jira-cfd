@@ -3,6 +3,7 @@ import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-qu
 import { getAllStateChangesWithDates, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
 import { jiraChangelogWithoutProgressQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-without-in-progress.fixture";
+import { State } from "../plotting/plotting-functions";
 
 describe("mapJiraResponseToBusinessObjects()", () => {
     const input = jiraJqlQueryResponseBodyFixture;
@@ -69,7 +70,7 @@ describe("getAllStatesWithDates()", () => {
     })
 
     test("it should return 'created' as the creation state and '2023-11-02T10:02:34.255+0100' as the creation date", () => {
-        expect(result[0].stateName).toEqual("created")
+        expect(result[0].stateName).toEqual(State.created)
         expect(result[0].stateReachedDate).toEqual(new Date("2023-11-02T10:02:34.255+0100"))
     })
 })

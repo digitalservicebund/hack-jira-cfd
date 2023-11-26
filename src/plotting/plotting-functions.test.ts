@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, inStateAtDay, sortDates, valuesSummedUp } from "./plotting-functions";
+import { State, createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, inStateAtDay, sortDates, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
 import { StateWithDate } from "../jira-related/jira-service-functions";
@@ -105,7 +105,7 @@ describe("createDataForCfd()", () => {
                 stateReachedDate: new Date("2023-01-02")
             },
             {
-                stateName: "created",
+                stateName: "Created",
                 stateReachedDate: new Date("2023-01-01")
             }
         ], [
@@ -118,7 +118,7 @@ describe("createDataForCfd()", () => {
                 stateReachedDate: new Date("2023-01-04")
             },
             {
-                stateName: "created",
+                stateName: "Created",
                 stateReachedDate: new Date("2023-01-03")
             }
         ]
@@ -149,13 +149,16 @@ describe("createDataForCfd()", () => {
     })
 
     describe("y values", () => {
-        const firstPlot = result[0]
-
+        
         test("it should return counts of 'created'", () => {
-            expect(firstPlot.y).toEqual([1, 0, 1, 0, 0])
+            const createdPlot = result[0]
+            expect(createdPlot.y).toEqual([1, 0, 1, 0, 0])
         })
 
         // TODO: counts of "In Progress"
+        // test("it should return counts of 'In Progress'", () => {
+        //     const secondPlot = result[1]
+        // })
         // TODO: counts of "resolved" <-- maybe not necessary
     })
 })
@@ -172,14 +175,14 @@ describe("inStateAtDay()", () => {
             stateReachedDate: new Date("2023-01-02")
         },
         {
-            stateName: "created",
+            stateName: "Created",
             stateReachedDate: new Date("2023-01-01")
         }
     ]
 
 
     test("it should return true for '2023-01-01' and state 'created' as the dates match ", () => {
-        const result = inStateAtDay(day, "created", statesWithDates)
+        const result = inStateAtDay(day, State.created, statesWithDates)
         expect(result).toBeTrue()
     })
 
@@ -190,7 +193,7 @@ describe("inStateAtDay()", () => {
 
     test("it should return false for '2023-01-02' and state 'created' as there's already the next state", () => {
         const day = new Date("2023-01-02")
-        const result = inStateAtDay(day, "created", statesWithDates)
+        const result = inStateAtDay(day, State.created, statesWithDates)
         expect(result).toBeFalse()
     })
 

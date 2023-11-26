@@ -1,6 +1,6 @@
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
-import { createAuthorizationHeaderValue, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
-import { createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
+import { StateWithDate, createAuthorizationHeaderValue, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
+import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { log } from "mathjs";
@@ -26,12 +26,23 @@ console.log(`Found ${issues.length} issues`);
 
 console.log("Fetching details on items: ");
 
+// TODO: get away with the let, here
+let issuesWithChangelogs: any = []
+
 const statsIncludingUndefinedStarts = await Promise.all(
     issues.map(async issue => {
         const issueChangelog = await getIssueChangelog(
             issue.key,
             hardcodedJiraData.jiraApiBaseUrl,
             authHeaderValue)
+
+        // alien code below
+        issuesWithChangelogs.push({
+            issue: issue,
+            issueChangelog: issueChangelog
+        })
+        // alien code above
+
         const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
         const startedDateInfo = startedDate ? startedDate.toISOString() : "not found"
         console.log("- ${issue.key}: "
@@ -53,6 +64,9 @@ const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
+const dateWithStatesArray: StateWithDate[][] = issuesWithChangelogs.map((iwc: any) => getAllStatesWithDates(iwc.issue, iwc.issueChangelog))
+const cfdPlotData = createPlotDataForCfd(dateWithStatesArray)
+
 const histogramPlot: Plot = {
     ...histogramPlotData,
     type: "bar"
@@ -68,17 +82,16 @@ const percentagesPlot: Plot = {
 console.log(percentagesPlot);
 
 const cfdPlot: Plot = {
-    x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
-    y: [1, 2, 3],
+    ...cfdPlotData[0],
     name: "To Do",
     type: "bar"
 }
-const cfdPlot2: Plot = {
-    x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
-    y: [2, 3, 4],
-    name: "In Progress",
-    type: "bar"
-}
+// const cfdPlot2: Plot = {
+//     x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
+//     y: [2, 3, 4],
+//     name: "In Progress",
+//     type: "bar"
+// }
 
 
 const histogramLayout: Layout = {
@@ -109,7 +122,7 @@ const cfdLayout: Layout = {
 
 plot([histogramPlot], histogramLayout)
 plot([percentagesPlot], percentagesLayout)
-plot([cfdPlot, cfdPlot2], cfdLayout)
+plot([cfdPlot], cfdLayout)
 
 
 console.log("Done");

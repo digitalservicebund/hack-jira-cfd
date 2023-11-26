@@ -47,6 +47,12 @@ interface StatesCountsPerDay {
 
 }
 
+export enum State {
+    created = "Created",
+    todo = "To Do",
+    done = "Done" 
+}
+
 export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): Plot[] {
     // get dates
     const dates = _.flattenDeep(statesWithDatesArray.map(swd => swd.map(s => s.stateReachedDate)))
@@ -58,21 +64,14 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         end: endDate!
     })
 
-    // hardcoded states #thisIsAHack
-    const statesInSequence = [
-        "created",
-        "To Do",
-        "Done"
-    ]
-
     const statesCounts: StatesCountsPerDay[] = dateList.map(date => {
         const count = _.sum(statesWithDatesArray.map(swd => {
-            return inStateAtDay(date, "created", swd)
+            return inStateAtDay(date, State.created, swd)
         }).map(result => result === true ? 1 : 0))
         return <StatesCountsPerDay>{
             day: date,
             statesCounts: [{
-                stateName: "created",
+                stateName: State.created,
                 stateCount: count
             }]
         }
@@ -83,7 +82,7 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     const result: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
-            return sc.statesCounts.find(s => s.stateName === "created")?.stateCount!
+            return sc.statesCounts.find(s => s.stateName === State.created)?.stateCount!
         })
     }
 
@@ -103,6 +102,8 @@ export function inStateAtDay(day: Date, stateName: string, statesWithDates: Stat
     }
 
     const nextStateWithDate = statesWithDatesSorted[stateWithDateIndex + 1]
+
+
 
     if (day >= stateWithDate.stateReachedDate
         && day < nextStateWithDate.stateReachedDate) {
