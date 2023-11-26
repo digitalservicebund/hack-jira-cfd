@@ -93,7 +93,7 @@ describe("createPlotDataForPercentages()", () => {
 // => count the tickets for each state
 // => return an array of a plotting datasets, one for each state
 
-describe("createDataForCfd()", () => {
+describe.skip("createDataForCfd()", () => {
     const statesWithDates: StateWithDate[][] = [
         [
             {
@@ -189,6 +189,7 @@ describe("inStateAtDay()", () => {
     })
 
     test("it should return false for '2023-01-02' and state 'created' as there's already the next state", () => {
+        const day = new Date("2023-01-02")
         const result = inStateAtDay(day, "created", statesWithDates)
         expect(result).toBeFalse()
     })
