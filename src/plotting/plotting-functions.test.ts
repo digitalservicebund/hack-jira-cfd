@@ -180,17 +180,22 @@ describe("inStateAtDay()", () => {
 
     test("it should return true for '2023-01-01' and state 'created' as the dates match ", () => {
         const result = inStateAtDay(day, "created", statesWithDates)
-        expect(result).toEqual(true)
+        expect(result).toBeTrue()
     })
 
     test("it should return false for '2023-01-01' and state 'To Do' as the dates do not match", () => {
         const result = inStateAtDay(day, "To Do", statesWithDates)
-        expect(result).toEqual(false)
+        expect(result).toBeFalse()
+    })
+
+    test("it should return false for '2023-01-02' and state 'created' as there's already the next state", () => {
+        const result = inStateAtDay(day, "created", statesWithDates)
+        expect(result).toBeFalse()
     })
 
     test("it should return true for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
         const result = inStateAtDay(day, "resolved", statesWithDates)
-        expect(result).toEqual(true)
+        expect(result).toBeTrue()
     })
 })
 
