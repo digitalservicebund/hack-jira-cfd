@@ -149,7 +149,7 @@ describe("createDataForCfd()", () => {
     })
 
     describe("y values", () => {
-        
+
         test("it should return counts of 'created'", () => {
             const createdPlot = result[0]
             expect(createdPlot.y).toEqual([1, 0, 1, 0, 0])
@@ -200,6 +200,10 @@ describe("inStateAtDay()", () => {
     test("it should return true for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
         const result = inStateAtDay(day, "resolved", statesWithDates)
         expect(result).toBeTrue()
+    })
+
+    test("it should return false if state is not found", () => {
+        const result = inStateAtDay(day, "unknown state", statesWithDates)
     })
 })
 
