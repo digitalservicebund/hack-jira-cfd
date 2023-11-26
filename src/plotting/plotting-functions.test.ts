@@ -178,13 +178,18 @@ describe("getStatesCountsPerDay()", () => {
         ]
     
 
-    test("it should return 1 for '2023-01-01' and state 'created' ", () => {
+    test("it should return 1 for '2023-01-01' and state 'created' as the dates match ", () => {
         const result = getStatesCountsPerDay(day, "created", statesWithDates)
         expect(result).toEqual(1)
     })
 
-    test("it should return 0 for '2023-01-01' and state 'To Do'", () => {
+    test("it should return 0 for '2023-01-01' and state 'To Do' as the dates do not match", () => {
         const result = getStatesCountsPerDay(day, "To Do", statesWithDates)
+        expect(result).toEqual(0)
+    })
+
+    test("it should return 1 for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
+        const result = getStatesCountsPerDay(day, "resolved", statesWithDates)
         expect(result).toEqual(0)
     })
 })
