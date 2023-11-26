@@ -182,6 +182,11 @@ describe("getStatesCountsPerDay()", () => {
         const result = getStatesCountsPerDay(day, "created", statesWithDates)
         expect(result).toEqual(1)
     })
+
+    test("it should return 0 for '2023-01-01' and state 'To Do'", () => {
+        const result = getStatesCountsPerDay(day, "To Do", statesWithDates)
+        expect(result).toEqual(0)
+    })
 })
 
 describe("sortDates()", () => {
