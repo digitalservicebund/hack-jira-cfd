@@ -38,19 +38,17 @@ export function valuesSummedUp(values: number[]): number[] {
 
 interface StatesCountsPerDay {
     day: Date;
-    statesCounts: [
+    statesCounts: 
         {
             stateName: string;
             stateCount: number;
-        }
-    ]
-
+        }[]
 }
 
 export enum State {
     created = "Created",
-    todo = "To Do",
-    done = "Done" 
+    inProgress = "In Progress",
+    done = "Done"
 }
 
 export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): Plot[] {
@@ -65,14 +63,32 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     })
 
     const statesCounts: StatesCountsPerDay[] = dateList.map(date => {
-        const count = _.sum(statesWithDatesArray.map(swd => {
+        // TODO: go through states, simplify
+        const createdCount = _.sum(statesWithDatesArray.map(swd => {
             return inStateAtDay(date, State.created, swd)
         }).map(result => result === true ? 1 : 0))
+
+        const inProgressCount = _.sum(statesWithDatesArray.map(swd => {
+            return inStateAtDay(date, State.inProgress, swd)
+        }).map(result => result === true ? 1 : 0))
+
+        const doneCount = _.sum(statesWithDatesArray.map(swd => {
+            return inStateAtDay(date, State.done, swd)
+        }).map(result => result === true ? 1 : 0))
+
+
+
         return <StatesCountsPerDay>{
             day: date,
             statesCounts: [{
                 stateName: State.created,
-                stateCount: count
+                stateCount: createdCount
+            }, {
+                stateName: State.inProgress,
+                stateCount: inProgressCount
+            }, {
+                stateName: State.done,
+                stateCount: doneCount
             }]
         }
     })
@@ -94,6 +110,11 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
 export function inStateAtDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): boolean {
     const statesWithDatesSorted = _.sortBy(statesWithDates, s => s.stateReachedDate)
     const stateWithDateIndex = statesWithDatesSorted.findIndex(s => s.stateName === stateName)
+
+    if (stateWithDateIndex === -1) {
+        return false
+    }
+
     const stateWithDate = statesWithDatesSorted[stateWithDateIndex]
 
     if (stateWithDateIndex > statesWithDates.length - 2) {
@@ -102,8 +123,6 @@ export function inStateAtDay(day: Date, stateName: string, statesWithDates: Stat
     }
 
     const nextStateWithDate = statesWithDatesSorted[stateWithDateIndex + 1]
-
-
 
     if (day >= stateWithDate.stateReachedDate
         && day < nextStateWithDate.stateReachedDate) {
