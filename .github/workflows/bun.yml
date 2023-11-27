@@ -8,11 +8,11 @@ on:
 
 jobs:
   my-job:
-    name: Run tests
+    name: Test + Test Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
 
       - run: bun install
-      - run: bun test
+      - run: bun test --coverage
