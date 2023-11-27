@@ -3,7 +3,7 @@ import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { Plot } from "nodeplotlib"
 import { cumsum, index } from "mathjs";
 import { StateWithDate } from "../jira-related/jira-service-functions";
-import { Interval, eachDayOfInterval, getDay, isWithinInterval } from "date-fns";
+import { Interval, eachDayOfInterval, getDay, getISODay, isWithinInterval } from "date-fns";
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
@@ -62,6 +62,8 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         end: endDate!
     })
 
+    const dateListWithoutSaturdaysAndSundays = removeSaturdaysAndSundays(dateList)
+
     const statesCounts: StatesCountsPerDay[] = dateList.map(date => {
         // TODO: go through states, simplify
         const createdCount = _.sum(statesWithDatesArray.map(swd => {
@@ -115,6 +117,11 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     }
 
     return [resultCreated, resultInProgress, resultDone]
+}
+
+export function removeSaturdaysAndSundays(dates: Date[]): Date[] {
+    const withoutSaturdaysAndSundays = dates.filter(d => getISODay(d) <= 5) // ISO Monday is 1, ... Sunday is 7
+    return withoutSaturdaysAndSundays;
 }
 
 export function inStateAtDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): boolean {
