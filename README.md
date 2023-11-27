@@ -20,9 +20,9 @@ Get more info about the flow of work in a Jira Cloud project.
 ✅ Display the histogram, show the user <br>
 ✅ Calculate data for a cycle time graph showing what percentage of all issues was completed in what period of time <br>
 ✅ Display the cycle time percentages graph <br>
-❌ Calculate data for a Cumulative Flow Diagram <br>
-❌ Display a Cumulative Flow Diagram <br>
-
+✅ Calculate data for a Cumulative Flow Diagram (CFD) <br>
+✅ Display a Cumulative Flow Diagram <br>
+❌ Configure states for CFD via env vars
 
 
 # Running / Dev
