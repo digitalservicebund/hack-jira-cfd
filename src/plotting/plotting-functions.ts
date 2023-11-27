@@ -95,8 +95,6 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         }
     })
 
-    // const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day => inStateAtDay(day, statesWithDatesArray))
-
     const resultCreated: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
