@@ -1,4 +1,4 @@
 [test]
 
-# to require 90% line-level and function-level coverage
-coverageThreshold = 0.9
+# to require 100% line-level and function-level coverage
+coverageThreshold = 1.0
