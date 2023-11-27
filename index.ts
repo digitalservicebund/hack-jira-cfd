@@ -81,18 +81,23 @@ const percentagesPlot: Plot = {
 
 console.log(percentagesPlot);
 
-const cfdPlot: Plot = {
+const cfdPlotCreated: Plot = {
     ...cfdPlotData[0],
     name: "To Do",
     type: "bar"
 }
-// const cfdPlot2: Plot = {
-//     x: [new Date("2023-01-01"), new Date("2023-01-02"), new Date("2023-01-03")],
-//     y: [2, 3, 4],
-//     name: "In Progress",
-//     type: "bar"
-// }
 
+const cfdPlotDataInProgress: Plot = {
+    ...cfdPlotData[1],
+    name: "In Progress",
+    type: "bar"
+}
+
+const cfdPlotDataResolved: Plot = {
+    ...cfdPlotData[2],
+    name: "Resolved",
+    type: "bar"
+}
 
 const histogramLayout: Layout = {
     title: `Cycle Time Histogram (In Progress -> Done)<br>(${process.env.JIRA_JQL_QUERY})`,
@@ -117,12 +122,12 @@ const percentagesLayout: Layout = {
 
 const cfdLayout: Layout = {
     barmode: "stack",
-    title: "Made up CFD (placeholder)"
+    title: "Cumulative Flow Diagram (CFD)"
 }
 
 plot([histogramPlot], histogramLayout)
 plot([percentagesPlot], percentagesLayout)
-plot([cfdPlot], cfdLayout)
+plot([cfdPlotDataResolved, cfdPlotDataInProgress, cfdPlotCreated], cfdLayout)
 
 
 console.log("Done");
