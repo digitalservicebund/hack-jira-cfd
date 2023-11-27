@@ -122,7 +122,7 @@ const percentagesLayout: Layout = {
 
 const cfdLayout: Layout = {
     barmode: "stack",
-    title: "Cumulative Flow Diagram (CFD)"
+    title: "Cumulative Flow Diagram (CFD)<br>(excluding Saturdays + Sundays)",
 }
 
 plot([histogramPlot], histogramLayout)
