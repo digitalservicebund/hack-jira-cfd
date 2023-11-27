@@ -198,8 +198,15 @@ describe("inStateAtDay()", () => {
     })
 
     test("it should return true for '2023-01-07' and state 'resolved' as it was resolved way before", () => {
+        const day = new Date("2023-01-07")
         const result = inStateAtDay(day, "resolved", statesWithDates)
         expect(result).toBeTrue()
+    })
+
+    test("it should return false for '2023-01-03' and state 'resolved' as it was not resolved by then", () => {
+        const day = new Date("2023-01-03")
+        const result = inStateAtDay(day, "resolved", statesWithDates)
+        expect(result).toBeFalse()
     })
 
     test("it should return false if state is not found", () => {
