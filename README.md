@@ -3,7 +3,7 @@
 # hack-jira-cfd
 Get more info about the flow of work in a Jira Cloud project.
 
-![Two graphs. One showing a histogram of cycle times, the other showing the percentage of issues completed after x days](https://github.com/digitalservicebund/hack-jira-cfd/blob/main/res/screenshot.png)
+![Three graphs. The first one showing a histogram of tickets' cycle times. The second one showing the percentage of issues completed after x days. The third showing the Cumulative Flow Diagram with gaps for Saturdays and Sundays, the mouse pointing to Nov 9 2023 revealing the counts for "To Do" (5), "In Progress" (6) and "Resolved" (26)](https://github.com/digitalservicebund/hack-jira-cfd/blob/main/res/screenshot.png)
 
 # Features and Known Non-Features
 
