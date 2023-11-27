@@ -98,15 +98,15 @@ describe("createDataForCfd()", () => {
         [
             {
                 stateName: "resolved",
-                stateReachedDate: new Date("2023-01-04")
+                stateReachedDate: new Date("2023-01-05")
             },
             {
                 stateName: "To Do",
-                stateReachedDate: new Date("2023-01-02")
+                stateReachedDate: new Date("2023-01-03")
             },
             {
                 stateName: "Created",
-                stateReachedDate: new Date("2023-01-01")
+                stateReachedDate: new Date("2023-01-01") // Sunday
             }
         ], [
             {
@@ -126,20 +126,19 @@ describe("createDataForCfd()", () => {
     const result = createPlotDataForCfd(statesWithDates)
 
 
-    describe("x values", () => {
+    describe("x values, first plot ('created')", () => {
         const firstPlot = result[0]
 
-        test("it should have '2023-01-01' as the first x value of first ", () => {
-            expect(firstPlot.x![0]).toEqual(new Date("2023-01-01"))
+        test("it should have '2023-01-02' as the first x value of first (skipping the Sunday)", () => {
+            expect(firstPlot.x![0]).toEqual(new Date("2023-01-02"))
         })
 
-        test("it should have '2023-01-04' as last x value", () => {
+        test("it should have '2023-01-05' as last x value", () => {
             expect(_.last(<Date[]>firstPlot.x)).toEqual(new Date("2023-01-05"))
         })
 
-        test("it should have all days between first and last date as x values", () => {
+        test("it should have all days between first and last date as x values, skipping the Sunday", () => {
             expect(firstPlot.x).toEqual([
-                new Date("2023-01-01"),
                 new Date("2023-01-02"),
                 new Date("2023-01-03"),
                 new Date("2023-01-04"),
@@ -152,7 +151,7 @@ describe("createDataForCfd()", () => {
 
         test("it should return counts of 'created'", () => {
             const createdPlot = result[0]
-            expect(createdPlot.y).toEqual([1, 0, 1, 0, 0])
+            expect(createdPlot.y).toEqual([1, 1, 0, 0])
         })
 
         // TODO: counts of "In Progress"
