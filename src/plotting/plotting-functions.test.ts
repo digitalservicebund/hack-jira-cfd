@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { State, createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, inStateAtDay, sortDates, valuesSummedUp } from "./plotting-functions";
+import { State, createPlotDataForCfd, createPlotDataForPercentages as createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram, inStateAtDay, removeSaturdaysAndSundays, sortDates, valuesSummedUp } from "./plotting-functions";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import * as _ from "lodash"
 import { StateWithDate } from "../jira-related/jira-service-functions";
@@ -228,6 +228,23 @@ describe("sortDates()", () => {
             new Date("2023-01-01"),
             new Date("2023-02-02"),
             new Date("2023-03-03")
+        ])
+    })
+})
+
+describe("removeSaturdaysAndSundays()", () => {
+    const dates: Date[] = [
+        new Date("2023-01-01"), // Sunday
+        new Date("2023-01-02"),
+        new Date("2023-01-06"),
+        new Date("2023-01-07"), // Saturday
+    ]
+    const result = removeSaturdaysAndSundays(dates)
+
+    test("it should remove the Sunday and Saturday dates", () => {
+        expect(result).toEqual([
+            new Date("2023-01-02"),
+            new Date("2023-01-06")
         ])
     })
 })
