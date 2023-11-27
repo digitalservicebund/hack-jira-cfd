@@ -1,9 +1,20 @@
 import { describe, expect, test } from "bun:test";
 import { jiraJqlQueryResponseBodyFixture } from "../../test-fixtures/jira-jql-query-response-fixture";
-import { getAllStateChangesWithDates, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
+import { createAuthorizationHeaderValue, getAllStateChangesWithDates, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./jira-service-functions";
 import { jiraChangelogQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-fixture";
 import { jiraChangelogWithoutProgressQueryResponseBodyFixture } from "../../test-fixtures/jira-changelog-response-without-in-progress.fixture";
 import { State } from "../plotting/plotting-functions";
+
+// added for test coverage; never been red
+describe("createAuthorizationHeaderValue()", () => {
+    const email = "me@example.com"
+    const authToken = "myAuthToken"
+    const result = createAuthorizationHeaderValue(email, authToken)
+
+    test("it should return the correct 'Basic' header value", () => {
+        expect(result).toEqual("Basic bWVAZXhhbXBsZS5jb206bXlBdXRoVG9rZW4=")
+    })
+})
 
 describe("mapJiraResponseToBusinessObjects()", () => {
     const input = jiraJqlQueryResponseBodyFixture;
