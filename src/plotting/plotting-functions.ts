@@ -114,8 +114,6 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
         })
     }
 
-    console.log("RESULT", JSON.stringify(resultCreated, null, 2));
-
     return [resultCreated, resultInProgress, resultDone]
 }
 
