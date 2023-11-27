@@ -23,6 +23,7 @@ Get more info about the flow of work in a Jira Cloud project.
 ✅ Calculate data for a Cumulative Flow Diagram (CFD) <br>
 ✅ Display a Cumulative Flow Diagram <br>
 ❌ Configure states for CFD via env vars
+❌ Remove weekends from CFD
 
 
 # Running / Dev
