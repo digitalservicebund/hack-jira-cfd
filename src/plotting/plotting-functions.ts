@@ -38,11 +38,11 @@ export function valuesSummedUp(values: number[]): number[] {
 
 interface StatesCountsPerDay {
     day: Date;
-    statesCounts: 
-        {
-            stateName: string;
-            stateCount: number;
-        }[]
+    statesCounts:
+    {
+        stateName: string;
+        stateCount: number;
+    }[]
 }
 
 export enum State {
@@ -95,16 +95,28 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
 
     // const statesCountsPerDay: StatesCountsPerDay[] = dateList.map(day => inStateAtDay(day, statesWithDatesArray))
 
-    const result: Plot = {
+    const resultCreated: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
             return sc.statesCounts.find(s => s.stateName === State.created)?.stateCount!
         })
     }
+    const resultInProgress: Plot = {
+        x: statesCounts.map(sc => sc.day),
+        y: statesCounts.map(sc => {
+            return sc.statesCounts.find(s => s.stateName === State.inProgress)?.stateCount!
+        })
+    }
+    const resultDone: Plot = {
+        x: statesCounts.map(sc => sc.day),
+        y: statesCounts.map(sc => {
+            return sc.statesCounts.find(s => s.stateName === State.done)?.stateCount!
+        })
+    }
 
-    console.log("RESULT", JSON.stringify(result, null, 2));
+    console.log("RESULT", JSON.stringify(resultCreated, null, 2));
 
-    return [result]
+    return [resultCreated, resultInProgress, resultDone]
 }
 
 export function inStateAtDay(day: Date, stateName: string, statesWithDates: StateWithDate[]): boolean {
@@ -118,7 +130,7 @@ export function inStateAtDay(day: Date, stateName: string, statesWithDates: Stat
     const stateWithDate = statesWithDatesSorted[stateWithDateIndex]
 
     if (stateWithDateIndex > statesWithDates.length - 2) {
-        if (day < stateWithDate.stateReachedDate) return true
+        if (day > stateWithDate.stateReachedDate) return true
         else return false
     }
 
