@@ -64,7 +64,7 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
 
     const dateListWithoutSaturdaysAndSundays = removeSaturdaysAndSundays(dateList)
 
-    const statesCounts: StatesCountsPerDay[] = dateList.map(date => {
+    const statesCounts: StatesCountsPerDay[] = dateListWithoutSaturdaysAndSundays.map(date => {
         // TODO: go through states, simplify
         const createdCount = _.sum(statesWithDatesArray.map(swd => {
             return inStateAtDay(date, State.created, swd)
