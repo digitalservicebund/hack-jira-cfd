@@ -71,7 +71,7 @@ describe("getAllStateChangesWithDates()", () => {
 })
 
 describe("getAllStatesWithDates()", () => {
-    const queryResponse = jiraJqlQueryResponseBodyFixture.issues[0]
+    const queryResponse = jiraJqlQueryResponseBodyFixture
     const items = mapJiraResponseToBusinessObjects(queryResponse)
     const changelog = jiraChangelogQueryResponseBodyFixture
     const result = getAllStatesWithDates(items[0], changelog)
