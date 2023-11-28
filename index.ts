@@ -12,17 +12,21 @@ const hardcodedJiraData: JiraQueryDataForFetchingIssues = {
     jiraApiBaseUrl: process.env.JIRA_API_BASE_URL!,
     jiraAuthEmail: process.env.ATLASSIAN_USER_EMAIL!,
     jiraAuthToken: process.env.ATLASSIAN_API_TOKEN!,
-    jiraJqlQuery: process.env.JIRA_JQL_QUERY!
+    jiraJqlQueryCycleTimes: process.env.JIRA_JQL_QUERY_CYCLE_TIMES!,
+    jiraJqlQueryCfd: process.env.JIRA_JQL_QUERY_CFD!,
+
 }
 
 // ensureDataIsComplete() // missing #thisIsAHack
 listHardcodedData(hardcodedJiraData)
 
 const authHeaderValue = createAuthorizationHeaderValue(hardcodedJiraData.jiraAuthEmail, hardcodedJiraData.jiraAuthToken);
-const jqlResult = await runJqlQueryAgainstJira(hardcodedJiraData.jiraJqlQuery, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
-const issues = mapJiraResponseToBusinessObjects(jqlResult)
+
+// Cycle times
+const jqlResultCycleTimes = await runJqlQueryAgainstJira(hardcodedJiraData.jiraJqlQueryCycleTimes, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
+const issuesCycleTimes = mapJiraResponseToBusinessObjects(jqlResultCycleTimes)
 // check if we reached the limit of 50 results // missing #thisIsAHack
-console.log(`Found ${issues.length} issues`);
+console.log(`Found ${issuesCycleTimes.length} issues`);
 
 console.log("Fetching details on items: ");
 
@@ -30,7 +34,7 @@ console.log("Fetching details on items: ");
 let issuesWithChangelogs: any = []
 
 const statsIncludingUndefinedStarts = await Promise.all(
-    issues.map(async issue => {
+    issuesCycleTimes.map(async issue => {
         const issueChangelog = await getIssueChangelog(
             issue.key,
             hardcodedJiraData.jiraApiBaseUrl,
@@ -115,7 +119,7 @@ const percentagesLayout: Layout = {
         title: "Completed within x working days"
     },
     yaxis: {
-        title: `% of issues completed (total: ${issues.length}) `,
+        title: `% of issues completed (total: ${issuesCycleTimes.length}) `,
         range: [0, 100]
     }
 }
