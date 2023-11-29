@@ -55,7 +55,7 @@ const issuesWithChangelogs: IssueWithChangelogs[] = await Promise.all(
 const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
     const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog)
     return {
-        ...issueWithChangelog,
+        ...issueWithChangelog.issue,
         startedDate: startedDate
     }
 }).filter(iwd => iwd !== undefined)
@@ -91,11 +91,9 @@ const statsIncludingUndefinedStarts = await Promise.all(
     })
 )
 
-const stats = statsIncludingUndefinedStarts.filter(e => e.startedDate !== undefined)
-
 console.log("Computing graph data");
 
-const cycleTimeHistogramData = getCycleTimeHistogram(stats)
+const cycleTimeHistogramData = getCycleTimeHistogram(issuesWithStartDate)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
