@@ -37,17 +37,31 @@ interface IssueWithChangelogs {
     changelog: any // #thisIsAHack
 }
 
-const IssueWithChangelogs = await Promise.all(
+const issuesWithChangelogs: IssueWithChangelogs[] = await Promise.all(
     issuesCycleTimes.map(async issue => {
         const changelog = await getIssueChangelog(
             issue.key,
             hardcodedJiraData.jiraApiBaseUrl,
             authHeaderValue)
+        return <IssueWithChangelogs>{
+            issue,
+            changelog
+        }
     })
 )
 
-//
+// get all data upfront
 
+const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
+    const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog)
+    return {
+        ...issueWithChangelog,
+        startedDate: startedDate
+    }
+}).filter(iwd => iwd !== undefined)
+
+
+// to be replaced
 let issuesWithChangelogs_toBeReplaced: any = []
 
 const statsIncludingUndefinedStarts = await Promise.all(
