@@ -5,6 +5,7 @@ import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { log } from "mathjs";
 import { stat } from "fs";
+import { Issue } from "./src/core/core-interfaces";
 
 console.log("Started");
 
@@ -30,8 +31,24 @@ console.log(`Found ${issuesCycleTimes.length} issues`);
 
 console.log("Fetching details on items: ");
 
-// TODO: get away with the let, here
-let issuesWithChangelogs: any = []
+// fetching all data
+interface IssueWithChangelogs {
+    issue: Issue,
+    changelog: any // #thisIsAHack
+}
+
+const IssueWithChangelogs = await Promise.all(
+    issuesCycleTimes.map(async issue => {
+        const changelog = await getIssueChangelog(
+            issue.key,
+            hardcodedJiraData.jiraApiBaseUrl,
+            authHeaderValue)
+    })
+)
+
+//
+
+let issuesWithChangelogs_toBeReplaced: any = []
 
 const statsIncludingUndefinedStarts = await Promise.all(
     issuesCycleTimes.map(async issue => {
@@ -41,7 +58,7 @@ const statsIncludingUndefinedStarts = await Promise.all(
             authHeaderValue)
 
         // alien code below
-        issuesWithChangelogs.push({
+        issuesWithChangelogs_toBeReplaced.push({
             issue: issue,
             issueChangelog: issueChangelog
         })
@@ -68,7 +85,7 @@ const cycleTimeHistogramData = getCycleTimeHistogram(stats)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
-const dateWithStatesArray: StateWithDate[][] = issuesWithChangelogs.map((iwc: any) => getAllStatesWithDates(iwc.issue, iwc.issueChangelog))
+const dateWithStatesArray: StateWithDate[][] = issuesWithChangelogs_toBeReplaced.map((iwc: any) => getAllStatesWithDates(iwc.issue, iwc.issueChangelog))
 const cfdPlotData = createPlotDataForCfd(dateWithStatesArray)
 
 const histogramPlot: Plot = {
