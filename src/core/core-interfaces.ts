@@ -5,3 +5,8 @@ export interface Issue {
     resolutionDate: Date,
 
 }
+
+export interface IssueWithChangelogs {
+    issue: Issue,
+    changelog: any // #thisIsAHack
+}

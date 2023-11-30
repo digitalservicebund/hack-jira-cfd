@@ -1,3 +1,5 @@
+import { Issue, IssueWithChangelogs } from "../core/core-interfaces";
+
 export interface JiraQueryDataForFetchingIssues {
     jiraApiBaseUrl: string,
     jiraAuthEmail: string,
@@ -40,4 +42,25 @@ export async function getIssueChangelog(
         },
     });
     return await response.json();
+}
+
+export async function getChangelogsForIssues(
+    issues: Issue[],
+    jiraApiBaseUrl: string,
+    authHeaderValue: string
+): Promise<IssueWithChangelogs[]> {
+    const issuesWithChangelogs = await Promise.all(
+        issues.map(async issue => {
+            const changelog = await getIssueChangelog(
+                issue.key,
+                jiraApiBaseUrl,
+                authHeaderValue)
+
+            return <IssueWithChangelogs>{
+                issue,
+                changelog
+            }
+        })
+    )
+    return issuesWithChangelogs
 }

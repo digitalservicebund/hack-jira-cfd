@@ -1,12 +1,10 @@
 import _ from "lodash";
-import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
+import { JiraQueryDataForFetchingIssues, getChangelogsForIssues, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { StateWithDate, createAuthorizationHeaderValue, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
 import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
-import { log } from "mathjs";
-import { stat } from "fs";
-import { Issue } from "./src/core/core-interfaces";
+import { IssueWithChangelogs } from "./src/core/core-interfaces";
 
 
 console.log("Started");
@@ -19,41 +17,29 @@ const envVar: JiraQueryDataForFetchingIssues = {
     jiraJqlQueryCfd: process.env.JIRA_JQL_QUERY_CFD!,
 
 }
-
-// ensureDataIsComplete() // missing #thisIsAHack
+// ensureAllEnvVarsAreAvailable() // missing #thisIsAHack
 listEnvVars(envVar)
 
 const authHeaderValue = createAuthorizationHeaderValue(envVar.jiraAuthEmail, envVar.jiraAuthToken);
 
-// Cycle times
+console.log("Fetching items according to JQL queries");
+
 const jqlResultCycleTimes = await runJqlQueryAgainstJira(envVar.jiraJqlQueryCycleTimes, envVar.jiraApiBaseUrl, authHeaderValue)
-const issuesCycleTimes = mapJiraResponseToBusinessObjects(jqlResultCycleTimes)
 // check if we reached the limit of 50 results // missing #thisIsAHack
-console.log(`Found ${issuesCycleTimes.length} issues`);
+const issuesForCycleTimes = mapJiraResponseToBusinessObjects(jqlResultCycleTimes)
+console.log(`Found ${issuesForCycleTimes.length} issues for the cycle time graphs`);
 
-console.log("Fetching details on items: ");
+const jqlResultsCfd = await runJqlQueryAgainstJira(envVar.jiraJqlQueryCfd, envVar.jiraApiBaseUrl, authHeaderValue)
+// check if we reached the limit of 50 results // missing #thisIsAHack
+const issuesForCfd = mapJiraResponseToBusinessObjects(jqlResultsCfd)
+console.log(`Found ${issuesForCfd.length} issues for the CFD`);
 
-// fetching all data
-interface IssueWithChangelogs {
-    issue: Issue,
-    changelog: any // #thisIsAHack
-}
+console.log("Fetching changelogs");
+const issuesWithChangelogsForCycleTimes: IssueWithChangelogs[] = await getChangelogsForIssues(issuesForCycleTimes, envVar.jiraApiBaseUrl, authHeaderValue)
 
-const issuesWithChangelogs: IssueWithChangelogs[] = await Promise.all(
-    issuesCycleTimes.map(async issue => {
-        const changelog = await getIssueChangelog(
-            issue.key,
-            envVar.jiraApiBaseUrl,
-            authHeaderValue)
+const issuesWithChangelogsForCfd: IssueWithChangelogs[] = await getChangelogsForIssues(issuesForCfd, envVar.jiraApiBaseUrl, authHeaderValue)
 
-        return <IssueWithChangelogs>{
-            issue,
-            changelog
-        }
-    })
-)
-
-const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
+const issuesWithStartDateForCycleTimes = issuesWithChangelogsForCycleTimes.map(issueWithChangelog => {
     const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog)
     return {
         ...issueWithChangelog.issue,
@@ -64,14 +50,14 @@ const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
 // computing graph data
 console.log("Computing graph data");
 
-const cycleTimeHistogramData = getCycleTimeHistogram(issuesWithStartDate)
+const cycleTimeHistogramData = getCycleTimeHistogram(issuesWithStartDateForCycleTimes)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
-const statesWithDatesArray: StateWithDate[][] = issuesWithChangelogs.map((iwc: IssueWithChangelogs) =>
+const statesWithDatesArrayForCfd: StateWithDate[][] = issuesWithChangelogsForCfd.map((iwc: IssueWithChangelogs) =>
     getAllStatesWithDates(iwc.issue, iwc.changelog)
 )
-const cfdPlotData = createPlotDataForCfd(statesWithDatesArray)
+const cfdPlotData = createPlotDataForCfd(statesWithDatesArrayForCfd)
 
 // define plots
 const histogramPlot: Plot = {
@@ -122,7 +108,7 @@ const percentagesLayout: Layout = {
         title: "Completed within x working days"
     },
     yaxis: {
-        title: `% of issues completed (total: ${issuesCycleTimes.length}) `,
+        title: `% of issues completed (total: ${issuesForCycleTimes.length}) `,
         range: [0, 100]
     }
 }
