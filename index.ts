@@ -65,14 +65,10 @@ const histogramPlot: Plot = {
     type: "bar"
 }
 
-console.log(histogramPlot);
-
 const percentagesPlot: Plot = {
     ...percentagesPlotData,
     type: "scatter"
 }
-
-console.log(percentagesPlot);
 
 const cfdPlotCreated: Plot = {
     ...cfdPlotData[0],
@@ -93,7 +89,7 @@ const cfdPlotDataResolved: Plot = {
 }
 
 const histogramLayout: Layout = {
-    title: `Cycle Time Histogram (In Progress -> Done)<br>(${process.env.JIRA_JQL_QUERY})`,
+    title: `Cycle Time Histogram (In Progress -> Done)`,
     xaxis: {
         title: `Working days until completion`
     },
