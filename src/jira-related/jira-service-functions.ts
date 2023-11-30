@@ -1,4 +1,4 @@
-import * as _ from "lodash"
+import _ from "lodash";
 import { Issue } from "../core/core-interfaces";
 
 export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthToken: string): string {
