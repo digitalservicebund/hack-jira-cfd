@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { JiraQueryDataForFetchingIssues, getIssueChangelog, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { StateWithDate, createAuthorizationHeaderValue, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
 import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
@@ -7,9 +8,10 @@ import { log } from "mathjs";
 import { stat } from "fs";
 import { Issue } from "./src/core/core-interfaces";
 
+
 console.log("Started");
 
-const hardcodedJiraData: JiraQueryDataForFetchingIssues = {
+const envVar: JiraQueryDataForFetchingIssues = {
     jiraApiBaseUrl: process.env.JIRA_API_BASE_URL!,
     jiraAuthEmail: process.env.ATLASSIAN_USER_EMAIL!,
     jiraAuthToken: process.env.ATLASSIAN_API_TOKEN!,
@@ -19,12 +21,12 @@ const hardcodedJiraData: JiraQueryDataForFetchingIssues = {
 }
 
 // ensureDataIsComplete() // missing #thisIsAHack
-listHardcodedData(hardcodedJiraData)
+listEnvVars(envVar)
 
-const authHeaderValue = createAuthorizationHeaderValue(hardcodedJiraData.jiraAuthEmail, hardcodedJiraData.jiraAuthToken);
+const authHeaderValue = createAuthorizationHeaderValue(envVar.jiraAuthEmail, envVar.jiraAuthToken);
 
 // Cycle times
-const jqlResultCycleTimes = await runJqlQueryAgainstJira(hardcodedJiraData.jiraJqlQueryCycleTimes, hardcodedJiraData.jiraApiBaseUrl, authHeaderValue)
+const jqlResultCycleTimes = await runJqlQueryAgainstJira(envVar.jiraJqlQueryCycleTimes, envVar.jiraApiBaseUrl, authHeaderValue)
 const issuesCycleTimes = mapJiraResponseToBusinessObjects(jqlResultCycleTimes)
 // check if we reached the limit of 50 results // missing #thisIsAHack
 console.log(`Found ${issuesCycleTimes.length} issues`);
@@ -41,16 +43,15 @@ const issuesWithChangelogs: IssueWithChangelogs[] = await Promise.all(
     issuesCycleTimes.map(async issue => {
         const changelog = await getIssueChangelog(
             issue.key,
-            hardcodedJiraData.jiraApiBaseUrl,
+            envVar.jiraApiBaseUrl,
             authHeaderValue)
+
         return <IssueWithChangelogs>{
             issue,
             changelog
         }
     })
 )
-
-// get all data upfront
 
 const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
     const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog)
@@ -60,46 +61,19 @@ const issuesWithStartDate = issuesWithChangelogs.map(issueWithChangelog => {
     }
 }).filter(iwd => iwd !== undefined)
 
-
-// to be replaced
-let issuesWithChangelogs_toBeReplaced: any = []
-
-const statsIncludingUndefinedStarts = await Promise.all(
-    issuesCycleTimes.map(async issue => {
-        const issueChangelog = await getIssueChangelog(
-            issue.key,
-            hardcodedJiraData.jiraApiBaseUrl,
-            authHeaderValue)
-
-        // alien code below
-        issuesWithChangelogs_toBeReplaced.push({
-            issue: issue,
-            issueChangelog: issueChangelog
-        })
-        // alien code above
-
-        const startedDate = getDateForStartingInProgressOfIssue(issueChangelog)
-        const startedDateInfo = startedDate ? startedDate.toISOString() : "not found"
-        console.log("- ${issue.key}: "
-            + startedDateInfo
-            + " till "
-            + issue.resolutionDate.toISOString())
-        return {
-            ...issue,
-            startedDate
-        }
-    })
-)
-
+// computing graph data
 console.log("Computing graph data");
 
 const cycleTimeHistogramData = getCycleTimeHistogram(issuesWithStartDate)
 const histogramPlotData = createPlotDataFromCycleTimeHistogram(cycleTimeHistogramData)
 const percentagesPlotData = createPlotDataForPercentages(cycleTimeHistogramData)
 
-const dateWithStatesArray: StateWithDate[][] = issuesWithChangelogs_toBeReplaced.map((iwc: any) => getAllStatesWithDates(iwc.issue, iwc.issueChangelog))
-const cfdPlotData = createPlotDataForCfd(dateWithStatesArray)
+const statesWithDatesArray: StateWithDate[][] = issuesWithChangelogs.map((iwc: IssueWithChangelogs) =>
+    getAllStatesWithDates(iwc.issue, iwc.changelog)
+)
+const cfdPlotData = createPlotDataForCfd(statesWithDatesArray)
 
+// define plots
 const histogramPlot: Plot = {
     ...histogramPlotData,
     type: "bar"
@@ -158,6 +132,7 @@ const cfdLayout: Layout = {
     title: "Cumulative Flow Diagram (CFD)<br>(excluding Saturdays + Sundays)",
 }
 
+// plot
 plot([histogramPlot], histogramLayout)
 plot([percentagesPlot], percentagesLayout)
 plot([cfdPlotDataResolved, cfdPlotDataInProgress, cfdPlotCreated], cfdLayout)
@@ -166,7 +141,7 @@ plot([cfdPlotDataResolved, cfdPlotDataInProgress, cfdPlotCreated], cfdLayout)
 console.log("Done");
 
 // -----------
-function listHardcodedData(jiraData: JiraQueryDataForFetchingIssues): void {
+function listEnvVars(jiraData: JiraQueryDataForFetchingIssues): void {
     console.log("jiraEmail:", jiraData.jiraAuthEmail);
     console.log("jiraAuthToken:", `...${jiraData.jiraAuthToken.slice(-5)}`);
     console.log("jiraApiBaseUrl:", jiraData.jiraApiBaseUrl)
