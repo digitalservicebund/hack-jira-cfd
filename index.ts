@@ -5,6 +5,7 @@ import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromC
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { IssueWithChangelogs } from "./src/core/core-interfaces";
+import Plotly from "plotly.js";
 
 
 console.log("Started");
@@ -94,7 +95,7 @@ const histogramLayout: Layout = {
         title: `Working days until completion`
     },
     yaxis: {
-        title: "# of issues"
+        title: `# of issues (total: ${issuesForCycleTimes.length})`
     }
 }
 
@@ -114,11 +115,46 @@ const cfdLayout: Layout = {
     title: "Cumulative Flow Diagram (CFD)<br>(excluding Saturdays + Sundays)",
 }
 
+const tableColumnValues = [
+    [
+        "JQL for cycle time graphs",
+        "Number of issues for cycle time graphs",
+        "JQL for CFD",
+        "Number of issues for CFD"
+    ],
+    [
+        `"${envVar.jiraJqlQueryCycleTimes}"`,
+        issuesForCycleTimes.length,
+        `"${envVar.jiraJqlQueryCfd}"`,
+        issuesForCfd.length
+    ]
+]
+
+const tableData: any = [{
+    type: 'table',
+    header: {
+        values: [
+            ["<b>Additional Info</b>"], ["Value"]
+        ],
+        align: ["left", "center"],
+        line: { width: 1, color: '#506784' },
+        fill: { color: '#00ACC1' },
+        font: { family: "Arial", size: 12, color: "white" }
+    },
+    cells: {
+        values: tableColumnValues,
+        align: ["left", "left"],
+        line: { color: "#506784", width: 1 },
+        fill: { color: ['#E0F7FA', 'white'] },
+        font: { family: "Arial", size: 11, color: ["#506784"] }
+    }
+}]
+
 // plot
 plot([histogramPlot], histogramLayout)
 plot([percentagesPlot], percentagesLayout)
 plot([cfdPlotDataResolved, cfdPlotDataInProgress, cfdPlotCreated], cfdLayout)
-
+plot(tableData);
 
 console.log("Done");
 
