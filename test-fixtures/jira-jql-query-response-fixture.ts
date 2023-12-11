@@ -575,4 +575,4 @@ export const jiraJqlQueryResponseBodyFixture = {
             }
         },
     ]
-};
+}
