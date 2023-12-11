@@ -5,7 +5,9 @@ export interface JiraQueryDataForFetchingIssues {
     jiraAuthEmail: string,
     jiraAuthToken: string,
     jiraJqlQueryCycleTimes: string,
-    jiraJqlQueryCfd: string
+    jiraJqlQueryCfd: string,
+    todoStateString: string,
+    inProgressStateString: string
 }
 
 export async function runJqlQueryAgainstJira(

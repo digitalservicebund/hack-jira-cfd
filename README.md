@@ -13,7 +13,7 @@ Get more info about the flow of work in a Jira Cloud project.
 ✅ Query configured via env vars as well <br>
 ✅ Fetch changelog of issues <br>
 ✅ Determine date of issue going into "In Progress"<br>
-❌ "In Progress" state configured via env vars (currently hard coded as "In Progress")<br>
+✅ "In Progress" state configured via env vars (currently hard coded as "In Progress")<br>
 ❌ Deal with issues that were moved in and out of "In Progress" multiple times <br>
 ✅ Calculate data for a cycle time histogram (# of days between going into "In Progress" and the issue's `resolutionDate`) <br>
 ✅ Ignore issues that never went into "In Progress"
@@ -22,18 +22,26 @@ Get more info about the flow of work in a Jira Cloud project.
 ✅ Display the cycle time percentages graph <br>
 ✅ Calculate data for a Cumulative Flow Diagram (CFD) <br>
 ✅ Display a Cumulative Flow Diagram <br>
-❌ Configure states for CFD via env vars <br>
+✅ Configure states for CFD via env vars <br>
 ✅ Remove weekends from CFD
 
 # Running / Dev
 
 ## Configuring via Environment Variables
 We need a couple of environment variables set. You can use a `.env` file to do so.
+
+Auth / API:
 * `ATLASSIAN_USER_EMAIL` - The email of the account to authenticate with
 * `ATLASSIAN_API_TOKEN` - An API token of the account to authenticate with (here's how to create: [Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/))
 * `JIRA_API_BASE_URL` - The base URL of the Jira instance you want to talk to (e.g. `https://<myCompany>.atlassian.net/rest/api/2`)
-* `JIRA_JQL_QUERY_CYCLE_TIMES` - The query to fetch issues to report on (e.g. `project = MYPROJ AND status = Done AND created >= -30d`)
+
+Queries:
+* `JIRA_JQL_QUERY_CYCLE_TIMES` - The query to fetch issues to report cycle times on (e.g. `project = MYPROJ AND status = Done AND created >= -30d`)
 * `JIRA_JQL_QUERY_CFD` - The query to fetch issues to run the Cumulative Flow Diagram (CFD) on (e.g. `project = MYPROJ`)
+
+States:
+* `TODO_STATE_STRING` - The state that depicts "To Do" (e.g. `To Do`)
+* `IN_PROGRESS_STATE_STRING`- The state that depicts "In Progress" (e.g. `In Progress`)
 
 ## Running the App
 * Fetch dependencies: `bun install`

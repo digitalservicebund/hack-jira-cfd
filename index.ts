@@ -14,7 +14,8 @@ const envVar: JiraQueryDataForFetchingIssues = {
     jiraAuthToken: process.env.ATLASSIAN_API_TOKEN!,
     jiraJqlQueryCycleTimes: process.env.JIRA_JQL_QUERY_CYCLE_TIMES!,
     jiraJqlQueryCfd: process.env.JIRA_JQL_QUERY_CFD!,
-
+    todoStateString: process.env.TODO_STATE_STRING!,
+    inProgressStateString: process.env.IN_PROGRESS_STATE_STRING!
 }
 // ensureAllEnvVarsAreAvailable() // missing #thisIsAHack
 listEnvVars(envVar)
@@ -39,7 +40,7 @@ const issuesWithChangelogsForCycleTimes: IssueWithChangelogs[] = await getChange
 const issuesWithChangelogsForCfd: IssueWithChangelogs[] = await getChangelogsForIssues(issuesForCfd, envVar.jiraApiBaseUrl, authHeaderValue)
 
 const issuesWithStartDateForCycleTimes = issuesWithChangelogsForCycleTimes.map(issueWithChangelog => {
-    const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog)
+    const startedDate = getDateForStartingInProgressOfIssue(issueWithChangelog.changelog, envVar.todoStateString, envVar.inProgressStateString)
     return {
         ...issueWithChangelog.issue,
         startedDate: startedDate
@@ -163,5 +164,7 @@ function listEnvVars(jiraData: JiraQueryDataForFetchingIssues): void {
     console.log("jiraApiBaseUrl:", jiraData.jiraApiBaseUrl)
     console.log("jiraJqlQueryCycleTimes:", `"${jiraData.jiraJqlQueryCycleTimes}"`);
     console.log("jiraJqlQueryCfd:", `"${jiraData.jiraJqlQueryCfd}"`);
+    console.log("todoStateString: ", `"${jiraData.todoStateString}"`)
+    console.log("inProgressStateString: ", `"${jiraData.inProgressStateString}"`)
 }
 
