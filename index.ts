@@ -5,8 +5,6 @@ import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromC
 import { getCycleTimeHistogram } from "./src/core/core-functions";
 import { Layout, Plot, plot } from "nodeplotlib";
 import { IssueWithChangelogs } from "./src/core/core-interfaces";
-import Plotly from "plotly.js";
-
 
 console.log("Started");
 
