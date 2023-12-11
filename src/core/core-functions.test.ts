@@ -18,13 +18,13 @@ describe("getCycleTimeHistogram", () => {
         createdDate: new Date("2023-11-06"),
         startedDate: new Date("2023-11-07"),
         resolutionDate: new Date("2023-11-09"),
-    }]
+    }];
 
-    const result = getCycleTimeHistogram(input)
+    const result = getCycleTimeHistogram(input);
 
     test("should contain two entries", () => {
-        expect(result).toBeArrayOfSize(2)
-    })
+        expect(result).toBeArrayOfSize(2);
+    });
 
     test("should list 2 times 2 days and 1 time 3 days of duration", () => {
         const expectedResult = <CycleTimeHistogramEntry[]>[{
@@ -33,8 +33,8 @@ describe("getCycleTimeHistogram", () => {
         }, {
             numberOfDays: 3,
             issueCount: 1
-        }]
+        }];
 
-        expect(result).toEqual(expectedResult)
-    })
-})
+        expect(result).toEqual(expectedResult);
+    });
+});

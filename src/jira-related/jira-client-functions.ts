@@ -14,9 +14,9 @@ export async function runJqlQueryAgainstJira(
     jiraJqlQuery: string,
     jiraApiBaseUrl: string,
     jiraAuthHeaderValue: string): Promise<object> {
-    const searchParams = new URLSearchParams({ "jql": jiraJqlQuery })
-    const searchAPI = `${jiraApiBaseUrl}/search`
-    const searchUrl = `${searchAPI}?${searchParams}`
+    const searchParams = new URLSearchParams({ "jql": jiraJqlQuery });
+    const searchAPI = `${jiraApiBaseUrl}/search`;
+    const searchUrl = `${searchAPI}?${searchParams}`;
 
     const response = await fetch(searchUrl, {
         method: "GET",
@@ -27,7 +27,7 @@ export async function runJqlQueryAgainstJira(
     });
 
     const body = await response.json();
-    return body
+    return body;
 }
 
 export async function getIssueChangelog(
@@ -35,7 +35,7 @@ export async function getIssueChangelog(
     jiraApiBaseUrl: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authHeaderValue: string): Promise<any> {
-    const searchUrl = `${jiraApiBaseUrl}/issue/${issueKey}/changelog`
+    const searchUrl = `${jiraApiBaseUrl}/issue/${issueKey}/changelog`;
 
     const response = await fetch(searchUrl, {
         method: "GET",
@@ -57,13 +57,13 @@ export async function getChangelogsForIssues(
             const changelog = await getIssueChangelog(
                 issue.key,
                 jiraApiBaseUrl,
-                authHeaderValue)
+                authHeaderValue);
 
             return <IssueWithChangelogs>{
                 issue,
                 changelog
-            }
+            };
         })
-    )
-    return issuesWithChangelogs
+    );
+    return issuesWithChangelogs;
 }
