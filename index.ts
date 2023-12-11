@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { JiraQueryDataForFetchingIssues, getChangelogsForIssues, runJqlQueryAgainstJira } from "./src/jira-related/jira-client-functions";
 import { StateWithDate, createAuthorizationHeaderValue, getAllStatesWithDates, getDateForStartingInProgressOfIssue, mapJiraResponseToBusinessObjects } from "./src/jira-related/jira-service-functions";
 import { createPlotDataForCfd, createPlotDataForPercentages, createPlotDataFromCycleTimeHistogram } from "./src/plotting/plotting-functions";
@@ -129,6 +128,7 @@ const tableColumnValues = [
     ]
 ]
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const tableData: any = [{
     type: 'table',
     header: {
