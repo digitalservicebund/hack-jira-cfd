@@ -8,5 +8,6 @@ export interface Issue {
 
 export interface IssueWithChangelogs {
     issue: Issue,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     changelog: any // #thisIsAHack
 }
