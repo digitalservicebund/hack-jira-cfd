@@ -21,10 +21,14 @@ export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
 }
 
 // https://digitalservicebund.atlassian.net/rest/api/2/issue/ndisc-40/changelog
-export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date | undefined {
+export function getDateForStartingInProgressOfIssue(
+    issueChangelog: any,
+    todoStateString: string,
+    inProgressStateString: string): Date | undefined {
+
     const values: any[] = issueChangelog.values
     // can we assume just one? #thisIsAHack
-    const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item)))
+    const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item, todoStateString, inProgressStateString)))
 
     if (!valueWithItemsFromToDoToInProgress)
         return undefined
@@ -32,16 +36,16 @@ export function getDateForStartingInProgressOfIssue(issueChangelog: any): Date |
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
 
-function itemComesFromToDo(item: any): boolean {
-    return item.fromString === "To Do"
+function itemComesFromState(item: any, stateString: string): boolean {
+    return item.fromString === stateString
 }
 
-function itemGoesToInProgress(item: any): boolean {
-    return item.toString === "In Progress"
+function itemGoesToState(item: any, stateString: string): boolean {
+    return item.toString === stateString
 }
 
-function itemIsTransitionToInProgress(item: any): boolean {
-    return itemComesFromToDo(item) && itemGoesToInProgress(item)
+function itemIsTransitionToInProgress(item: any, todoStateString: string, inProgressStateString: string): boolean {
+    return itemComesFromState(item, todoStateString) && itemGoesToState(item, inProgressStateString)
 }
 
 export interface StateWithDate {

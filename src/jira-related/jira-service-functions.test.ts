@@ -35,9 +35,9 @@ describe("mapJiraResponseToBusinessObjects()", () => {
     })
 })
 
-describe("getDateForStartingInProgressOfIssue()", () => {
+describe("getDateForStartingInProgressOfIssue() with 'To Do' and 'In Progress' as states", () => {
     const input = jiraChangelogQueryResponseBodyFixture
-    const result = getDateForStartingInProgressOfIssue(input)
+    const result = getDateForStartingInProgressOfIssue(input, "To Do", "In Progress")
 
     test("it should return a date", () => {
         expect(result).toBeDate()
@@ -49,7 +49,7 @@ describe("getDateForStartingInProgressOfIssue()", () => {
 
     test("it should return undefined if no start is found", () => {
         const inputWithoutEverBeenStarted = jiraChangelogWithoutProgressQueryResponseBodyFixture
-        const result = getDateForStartingInProgressOfIssue(inputWithoutEverBeenStarted)
+        const result = getDateForStartingInProgressOfIssue(inputWithoutEverBeenStarted, "To Do", "In Progress")
 
         expect(result).toBeUndefined()
     })
