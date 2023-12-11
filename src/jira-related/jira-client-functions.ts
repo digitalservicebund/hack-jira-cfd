@@ -33,6 +33,7 @@ export async function runJqlQueryAgainstJira(
 export async function getIssueChangelog(
     issueKey: string,
     jiraApiBaseUrl: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authHeaderValue: string): Promise<any> {
     const searchUrl = `${jiraApiBaseUrl}/issue/${issueKey}/changelog`
 
