@@ -54,8 +54,6 @@ describe("createPlotDataForPercentages()", () => {
         issueCount: 1
     }]
 
-    const totalIssueCount = _.sum(input.map(e => e.issueCount))
-
     const result = createPlotDataForPercentages(input)
 
     test("should return properties 'x' and 'y'", () => {
@@ -210,6 +208,7 @@ describe("inStateAtDay()", () => {
 
     test("it should return false if state is not found", () => {
         const result = inStateAtDay(day, "unknown state", statesWithDates)
+        expect(result).toBeFalse()
     })
 })
 
