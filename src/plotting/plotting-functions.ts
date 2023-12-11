@@ -1,9 +1,9 @@
 import * as _ from "lodash";
 import { CycleTimeHistogramEntry } from "../core/core-functions";
 import { Plot } from "nodeplotlib"
-import { cumsum, index } from "mathjs";
+import { cumsum } from "mathjs";
 import { StateWithDate } from "../jira-related/jira-service-functions";
-import { Interval, eachDayOfInterval, getDay, getISODay, isWithinInterval } from "date-fns";
+import { eachDayOfInterval, getISODay } from "date-fns";
 
 export function createPlotDataFromCycleTimeHistogram(cycleTimeHistogram: CycleTimeHistogramEntry[]): Plot {
     const xValues = cycleTimeHistogram.map(entry => entry.numberOfDays)
@@ -32,7 +32,6 @@ export function createPlotDataForPercentages(cycleTimeHistogram: CycleTimeHistog
 }
 
 export function valuesSummedUp(values: number[]): number[] {
-    const cumulativeSum = cumsum(values)
     return <number[]>cumsum(values)
 }
 
@@ -98,18 +97,21 @@ export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): P
     const resultCreated: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             return sc.statesCounts.find(s => s.stateName === State.created)?.stateCount!
         })
     }
     const resultInProgress: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             return sc.statesCounts.find(s => s.stateName === State.inProgress)?.stateCount!
         })
     }
     const resultDone: Plot = {
         x: statesCounts.map(sc => sc.day),
         y: statesCounts.map(sc => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             return sc.statesCounts.find(s => s.stateName === State.done)?.stateCount!
         })
     }
@@ -149,6 +151,7 @@ export function inStateAtDay(day: Date, stateName: string, statesWithDates: Stat
 }
 
 export function sortDates(dates: Date[]): Date[] {
-    const result = dates.sort((a, b) => a.getTime() - b.getTime())
-    return dates;
+    const dateCopy = [...dates]
+    dateCopy.sort((a, b) => a.getTime() - b.getTime())
+    return dateCopy;
 }
