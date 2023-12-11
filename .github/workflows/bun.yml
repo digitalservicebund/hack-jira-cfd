@@ -8,12 +8,13 @@ on:
 
 jobs:
   my-job:
-    name: Test + Test Coverage
+    name: Lint, Test + Test Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
 
       - run: bun install
+      - run: bunx eslint .
       - run: bun test --coverage
       - run: if [ $? -eq 1 ]; then echo "Coverage failed"; fi
