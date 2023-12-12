@@ -1,3 +1,5 @@
+import { JiraChangelog } from "../jira-related/jira-interfaces";
+
 export interface Issue {
     key: string,
     createdDate: Date,
@@ -8,6 +10,5 @@ export interface Issue {
 
 export interface IssueWithChangelogs {
     issue: Issue,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    changelog: any // #thisIsAHack
+    changelog: JiraChangelog // #thisIsAHack
 }
