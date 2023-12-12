@@ -1,5 +1,5 @@
 import { Issue, IssueWithChangelogs } from "../core/core-interfaces";
-import { JiraChangelog } from "./jira-interfaces";
+import { JiraChangelog, JiraQueryResponse } from "./jira-interfaces";
 
 export interface JiraQueryDataForFetchingIssues {
     jiraApiBaseUrl: string,
@@ -14,7 +14,7 @@ export interface JiraQueryDataForFetchingIssues {
 export async function runJqlQueryAgainstJira(
     jiraJqlQuery: string,
     jiraApiBaseUrl: string,
-    jiraAuthHeaderValue: string): Promise<object> {
+    jiraAuthHeaderValue: string): Promise<JiraQueryResponse> {
     const searchParams = new URLSearchParams({ "jql": jiraJqlQuery });
     const searchAPI = `${jiraApiBaseUrl}/search`;
     const searchUrl = `${searchAPI}?${searchParams}`;
