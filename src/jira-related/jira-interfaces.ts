@@ -6,10 +6,12 @@ export interface JiraChangelog {
 
 export interface JiraChangelogValue {
     created: string,
-    items: {
-        fromString: string | null,
-        toString: string,
-        [key: string]: any;
-    }[],
+    items: JiraChangelogValueItem[],
+    [key: string]: any;
+}
+
+export interface JiraChangelogValueItem {
+    fromString: string | null,
+    toString: string,
     [key: string]: any;
 }
