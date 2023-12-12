@@ -118,13 +118,17 @@ const tableColumnValues = [
         "JQL for cycle time graphs",
         "Number of issues for cycle time graphs",
         "JQL for CFD",
-        "Number of issues for CFD"
+        "Number of issues for CFD",
+        "State interpreted as 'To Do'",
+        "State interpreted as 'In Progress'"
     ],
     [
         `"${envVar.jiraJqlQueryCycleTimes}"`,
         issuesForCycleTimes.length,
         `"${envVar.jiraJqlQueryCfd}"`,
-        issuesForCfd.length
+        issuesForCfd.length,
+        `"${envVar.todoStateString}"`,
+        `"${envVar.inProgressStateString}"`
     ]
 ];
 
