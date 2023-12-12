@@ -1,4 +1,5 @@
 import { Issue, IssueWithChangelogs } from "../core/core-interfaces";
+import { JiraChangelog } from "./jira-interfaces";
 
 export interface JiraQueryDataForFetchingIssues {
     jiraApiBaseUrl: string,
@@ -33,8 +34,7 @@ export async function runJqlQueryAgainstJira(
 export async function getIssueChangelog(
     issueKey: string,
     jiraApiBaseUrl: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    authHeaderValue: string): Promise<any> {
+    authHeaderValue: string): Promise<JiraChangelog> {
     const searchUrl = `${jiraApiBaseUrl}/issue/${issueKey}/changelog`;
 
     const response = await fetch(searchUrl, {
