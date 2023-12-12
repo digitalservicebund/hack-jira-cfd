@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Issue } from "../core/core-interfaces";
+import { JiraChangelog } from "./jira-interfaces";
 
 export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthToken: string): string {
     const base64Credentials = btoa(`${jiraAuthEmail}:${jiraAuthToken}`);
@@ -61,8 +62,7 @@ export interface StateWithDate {
     stateReachedDate: Date
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getAllStateChangesWithDates(issueChangelog: any): StateWithDate[] {
+export function getAllStateChangesWithDates(issueChangelog: JiraChangelog): StateWithDate[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const valuesWithStateChanges = issueChangelog.values.filter((v: any) => _.some(v.items, (item: any) => item.fieldId === "status"));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
