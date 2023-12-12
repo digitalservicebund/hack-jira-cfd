@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Issue } from "../core/core-interfaces";
-import { JiraChangelog, JiraChangelogValue, JiraChangelogValueItem } from "./jira-interfaces";
+import { JiraChangelog, JiraChangelogValue, JiraChangelogValueItem, JiraQueryResponse } from "./jira-interfaces";
 
 export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthToken: string): string {
     const base64Credentials = btoa(`${jiraAuthEmail}:${jiraAuthToken}`);
@@ -9,10 +9,8 @@ export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthTo
     return authHeaderValue;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const issues: Issue[] = jiraResponse.issues.map((i: any) => {
+export function mapJiraResponseToBusinessObjects(jiraResponse: JiraQueryResponse): Issue[] {
+    const issues: Issue[] = jiraResponse.issues.map(i => {
         return {
             key: i.key,
             createdDate: new Date(i.fields.created),
