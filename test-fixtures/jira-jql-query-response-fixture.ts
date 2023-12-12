@@ -1,4 +1,6 @@
-export const jiraJqlQueryResponseBodyFixture = {
+import { JiraQueryResponse } from "../src/jira-related/jira-interfaces";
+
+export const jiraJqlQueryResponseBodyFixture: JiraQueryResponse = {
     "expand": "schema,names",
     "startAt": 0,
     "maxResults": 50,
