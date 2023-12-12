@@ -1,4 +1,6 @@
-export const jiraChangelogQueryResponseBodyFixture = {
+import { JiraChangelog } from "../src/jira-related/jira-interfaces";
+
+export const jiraChangelogQueryResponseBodyFixture: JiraChangelog = {
     "self": "hidden",
     "maxResults": 100,
     "startAt": 0,

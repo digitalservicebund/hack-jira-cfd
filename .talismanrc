@@ -5,3 +5,5 @@ fileignoreconfig:
   allowed_patterns: [key, projectTypeKey]
 - filename: src/core/core-functions.test.ts
   allowed_patterns: [key]
+- filename: src/jira-related/jira-interfaces.ts
+  allowed_patterns: [key]
