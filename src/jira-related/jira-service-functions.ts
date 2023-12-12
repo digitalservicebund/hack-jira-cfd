@@ -25,8 +25,7 @@ export function mapJiraResponseToBusinessObjects(jiraResponse: any): Issue[] {
 
 // https://digitalservicebund.atlassian.net/rest/api/2/issue/ndisc-40/changelog
 export function getDateForStartingInProgressOfIssue(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    issueChangelog: any,
+    issueChangelog: JiraChangelog,
     todoStateString: string,
     inProgressStateString: string): Date | undefined {
 
