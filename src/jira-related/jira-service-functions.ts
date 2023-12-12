@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Issue } from "../core/core-interfaces";
-import { JiraChangelog } from "./jira-interfaces";
+import { JiraChangelog, JiraChangelogValue, JiraChangelogValueItem } from "./jira-interfaces";
 
 export function createAuthorizationHeaderValue(jiraAuthEmail: string, jiraAuthToken: string): string {
     const base64Credentials = btoa(`${jiraAuthEmail}:${jiraAuthToken}`);
@@ -29,11 +29,9 @@ export function getDateForStartingInProgressOfIssue(
     todoStateString: string,
     inProgressStateString: string): Date | undefined {
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const values: any[] = issueChangelog.values;
+    const values: JiraChangelogValue[] = issueChangelog.values;
     // can we assume just one? #thisIsAHack
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, (item: any) => itemIsTransitionToInProgress(item, todoStateString, inProgressStateString)));
+    const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, item => itemIsTransitionToInProgress(item, todoStateString, inProgressStateString)));
 
     if (!valueWithItemsFromToDoToInProgress)
         return undefined;
@@ -41,18 +39,15 @@ export function getDateForStartingInProgressOfIssue(
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function itemComesFromState(item: any, stateString: string): boolean {
+function itemComesFromState(item: JiraChangelogValueItem, stateString: string): boolean {
     return item.fromString === stateString;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function itemGoesToState(item: any, stateString: string): boolean {
+function itemGoesToState(item: JiraChangelogValueItem, stateString: string): boolean {
     return item.toString === stateString;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function itemIsTransitionToInProgress(item: any, todoStateString: string, inProgressStateString: string): boolean {
+function itemIsTransitionToInProgress(item: JiraChangelogValueItem, todoStateString: string, inProgressStateString: string): boolean {
     return itemComesFromState(item, todoStateString) && itemGoesToState(item, inProgressStateString);
 }
 
@@ -62,16 +57,12 @@ export interface StateWithDate {
 }
 
 export function getAllStateChangesWithDates(issueChangelog: JiraChangelog): StateWithDate[] {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const valuesWithStateChanges = issueChangelog.values.filter((v: any) => _.some(v.items, (item: any) => item.fieldId === "status"));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const stateChanges: StateWithDate[] = _.flattenDeep(valuesWithStateChanges.map((v: any) => {
+    const valuesWithStateChanges = issueChangelog.values.filter(v => _.some(v.items, item => item.fieldId === "status"));
+    const stateChanges: StateWithDate[] = _.flattenDeep(valuesWithStateChanges.map(v => {
         const items = v.items;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const itemWithStateInfo = items.filter((i: any) => i.fieldId === "status");
+        const itemWithStateInfo = items.filter(i => i.fieldId === "status");
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return itemWithStateInfo.map((i: any) => {
+        return itemWithStateInfo.map(i => {
             return <StateWithDate>{
                 stateName: i.toString,
                 stateReachedDate: new Date(v.created)
@@ -82,8 +73,7 @@ export function getAllStateChangesWithDates(issueChangelog: JiraChangelog): Stat
     return stateChanges;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getAllStatesWithDates(issue: Issue, issueChangelog: any): StateWithDate[] {
+export function getAllStatesWithDates(issue: Issue, issueChangelog: JiraChangelog): StateWithDate[] {
     const initialState: StateWithDate = {
         stateName: "Created",
         stateReachedDate: issue.createdDate
