@@ -2,19 +2,26 @@ name: CI via GitHub Actions
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  my-job:
+  list-test-coverage:
     name: Lint, Test + Test Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
-
       - run: bun install
       - run: bun lint .
       - run: bun test --coverage
       - run: if [ $? -eq 1 ]; then echo "Coverage failed"; fi
+  
+  lint-with-oxlint:
+    name: Try Oxlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run oxlint
