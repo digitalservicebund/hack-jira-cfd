@@ -10,7 +10,7 @@
     "@types/lodash": "4.14.202",
     "@types/mathjs": "9.4.2",
     "bun-types": "latest",
-    "oxlint": "0.2.6"
+    "oxlint": "0.2.8"
   },
   "peerDependencies": {
     "typescript": "5.0.0"
