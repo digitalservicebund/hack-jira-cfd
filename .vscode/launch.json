@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug index.ts",
+            "type": "bun",
+            "request": "launch",
+            "program": "index.ts",
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "watchMode": false,
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
             "name": "Debug File",
             "type": "bun",
             "request": "launch",
