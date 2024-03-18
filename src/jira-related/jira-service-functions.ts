@@ -31,8 +31,11 @@ export function getDateForStartingInProgressOfIssue(
     // can we assume just one? #thisIsAHack
     const valueWithItemsFromToDoToInProgress = values.find(value => _.some(value.items, item => itemIsTransitionToInProgress(item, todoStateString, inProgressStateString)));
 
-    if (!valueWithItemsFromToDoToInProgress)
+    if (!valueWithItemsFromToDoToInProgress) {
+        console.log(`Ignored issue with changelog ${issueChangelog.self}`);
+        
         return undefined;
+    }
 
     return new Date(valueWithItemsFromToDoToInProgress.created);
 }
