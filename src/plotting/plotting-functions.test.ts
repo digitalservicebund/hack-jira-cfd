@@ -78,6 +78,10 @@ describe("createPlotDataForPercentages()", () => {
     test("should return 2 and 3 as x entries", () => {
         expect(<number[]>result.x).toEqual([2, 3]);
     });
+
+    test("should sum up to 100%", () => {
+        expect(_.last(<number[]>result.y)).toEqual(100);
+    })
 });
 
 // TODO: 
@@ -91,7 +95,7 @@ describe("createPlotDataForPercentages()", () => {
 // => count the tickets for each state
 // => return an array of a plotting datasets, one for each state
 
-describe("createDataForCfd()", () => {
+describe("createPlotDataForCfd()", () => {
     const statesWithDates: StateWithDate[][] = [
         [
             {
@@ -157,6 +161,13 @@ describe("createDataForCfd()", () => {
         //     const secondPlot = result[1]
         // })
         // TODO: counts of "resolved" <-- maybe not necessary
+    });
+
+    test("return [] for empty input", () => {
+        const emptyStatesWithDates: StateWithDate[][] = [];
+        const emptyResult = createPlotDataForCfd(emptyStatesWithDates);
+
+        expect(emptyResult).toBeEmpty()
     });
 });
 
