@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@types/date-fns": "2.6.0",
-    "@types/lodash": "4.14.202",
+    "@types/lodash": "4.17.0",
     "@types/mathjs": "9.4.2",
     "bun-types": "latest",
     "oxlint": "0.2.13"
