@@ -51,11 +51,17 @@ export enum State {
 }
 
 export function createPlotDataForCfd(statesWithDatesArray: StateWithDate[][]): Plot[] {
+    if (_.isEmpty(statesWithDatesArray)) {
+        console.log("The 'statesWithDatesArray' is empty.");
+        return [];
+    }
+
     // get dates
     const dates = _.flattenDeep(statesWithDatesArray.map(swd => swd.map(s => s.stateReachedDate)));
     const datesSorted = sortDates(dates);
     const startDate = _.first(datesSorted);
     const endDate = _.last(datesSorted);
+
     const dateList = eachDayOfInterval({
         start: startDate!,
         end: endDate!
