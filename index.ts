@@ -44,7 +44,7 @@ const issuesWithStartDateForCycleTimes = issuesWithChangelogsForCycleTimes.map(i
         ...issueWithChangelog.issue,
         startedDate: startedDate
     };
-}).filter(iwd => iwd !== undefined);
+}).filter(iwd => iwd !== undefined && iwd.startedDate !== undefined);
 
 // computing graph data
 console.log("Computing graph data");
