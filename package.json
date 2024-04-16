@@ -13,7 +13,7 @@
     "oxlint": "0.2.17"
   },
   "peerDependencies": {
-    "typescript": "5.0.0"
+    "typescript": "5.4.5"
   },
   "dependencies": {
     "date-fns": "3.6.0",
