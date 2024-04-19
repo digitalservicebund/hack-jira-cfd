@@ -14,8 +14,10 @@
         "minor",
         "patch"
       ],
+      "schedule": "[every weekday]", // branch creation
       "automerge": true,
-      "platformAutomerge": false
+      "platformAutomerge": false,
+      "automergeType": "branch"
     }
   ]
 }
