@@ -14,10 +14,10 @@
         "minor",
         "patch"
       ],
-      "schedule": "[every weekday]", // branch creation
+      "schedule": ["every weekday"], // branch creation
       "automerge": true,
-      "platformAutomerge": false,
-      "automergeType": "branch"
+      "platformAutomerge": false, // this would require more repository setup
+      "automergeType": "branch" // only create PRs if tests fail (or stall)
     }
   ]
 }
