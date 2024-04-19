@@ -15,7 +15,9 @@
         "patch"
       ],
       "automerge": true,
-      "platformAutomerge": false
+      "platformAutomerge": false,
+      "automergeType": "branch",
+      "automergeSchedule": ["every weekday"]
     }
   ]
 }
