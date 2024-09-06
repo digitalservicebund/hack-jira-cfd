@@ -1,9 +1,11 @@
 fileignoreconfig:
-- filename: index.test.ts
-  allowed_patterns: ["result[0].key"]
-- filename: test-fixtures/jira-jql-query-response-fixture.ts
-  allowed_patterns: [key, projectTypeKey]
-- filename: src/core/core-functions.test.ts
-  allowed_patterns: [key]
-- filename: src/jira-related/jira-interfaces.ts
-  allowed_patterns: [key]
+  - filename: index.test.ts
+    allowed_patterns: ["result[0].key"]
+  - filename: test-fixtures/jira-jql-query-response-fixture.ts
+    allowed_patterns: [key, projectTypeKey]
+  - filename: src/core/core-functions.test.ts
+    allowed_patterns: [key]
+  - filename: src/jira-related/jira-interfaces.ts
+    allowed_patterns: [key]
+  - filename: package-lock.json
+    checksum: abadfb683fc950cf5e553d2baca02254f2d0e21a4cf1ab046d2dea4fe62ea54e
