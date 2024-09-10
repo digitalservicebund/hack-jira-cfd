@@ -8,4 +8,4 @@ fileignoreconfig:
   - filename: src/jira-related/jira-interfaces.ts
     allowed_patterns: [key]
   - filename: package-lock.json
-    checksum: abadfb683fc950cf5e553d2baca02254f2d0e21a4cf1ab046d2dea4fe62ea54e
+    checksum: 919be81f92f434f3ee906dd753e30a157215721a9e58868e7c1527c0079987d2
