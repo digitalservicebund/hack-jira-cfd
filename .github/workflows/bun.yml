@@ -1,4 +1,6 @@
 name: CI Pipeline via GitHub Actions
+permissions:
+  contents: read
 
 on:
   push:
