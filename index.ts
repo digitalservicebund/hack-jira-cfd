@@ -164,7 +164,6 @@ console.log("Done");
 // -----------
 function listEnvVars(jiraData: JiraQueryDataForFetchingIssues): void {
     console.log("jiraEmail:", jiraData.jiraAuthEmail);
-    console.log("jiraAuthToken:", `...${jiraData.jiraAuthToken.slice(-5)}`);
     console.log("jiraApiBaseUrl:", jiraData.jiraApiBaseUrl);
     console.log("jiraJqlQueryCycleTimes:", `"${jiraData.jiraJqlQueryCycleTimes}"`);
     console.log("jiraJqlQueryCfd:", `"${jiraData.jiraJqlQueryCfd}"`);
